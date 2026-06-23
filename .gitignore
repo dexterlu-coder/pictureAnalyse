@@ -1,0 +1,31 @@
+# Local private source materials
+/local_data/
+
+# Sensitive drawing inputs
+/docs/**/*.pdf
+/docs/**/*.PDF
+/docs/**/*.png
+/docs/**/*.jpg
+/docs/**/*.jpeg
+/docs/**/*.tif
+/docs/**/*.tiff
+
+# Generated drawing artifacts
+/output/
+/outputs/
+/tmp/
+
+# Local drafts not intended for the public repository
+/reports/homework-submission-draft.md
+/reports/candidates/
+
+# Python/runtime cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Editor and OS noise
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

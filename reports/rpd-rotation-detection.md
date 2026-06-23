@@ -61,6 +61,17 @@
 - 不修改原始 PDF。
 - 不生成校正后的 PDF。
 
+## 公开仓库整理要求
+
+该项目将推送到 GitHub public 仓库，因此图纸原件、拆分 PDF、渲染 PNG、临时输出和个人草稿不得进入版本库。
+
+必须满足：
+
+- `.gitignore` 覆盖 `docs/**/*.pdf`、`output/`、`outputs/`、`tmp/`、`local_data/` 等路径。
+- 当前本地图纸资料整理到 `local_data/` 下。
+- Git 提交中只包含可公开的规则、规划、RPD、TODO、源码和必要说明。
+- 推送前执行 `git status --short`，确认没有图纸资料处于 staged 状态。
+
 ## 验收标准
 
 - 前 5 张图纸识别结果与已人工判断结果一致：

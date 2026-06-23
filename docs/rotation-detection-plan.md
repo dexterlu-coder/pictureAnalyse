@@ -32,6 +32,23 @@
 
 ## 阶段规划
 
+### 阶段零：公开仓库整理
+
+在推送到 GitHub public 仓库前，先整理项目目录并排除敏感图纸资料。
+
+主要任务：
+
+- 新增 `.gitignore`，忽略图纸原件、拆分页、渲染图、临时目录和本地草稿。
+- 将当前图纸原件、拆分 PDF、渲染 PNG 移入 `local_data/` 下的本地私有目录。
+- 保留公开仓库所需的规则、规划、RPD、TODO 和后续源码。
+- 推送前使用 `git status --short` 确认没有敏感 PDF/PNG 被跟踪或待提交。
+
+推荐本地私有目录：
+
+- `local_data/source_pdfs/`
+- `local_data/split_pdfs/`
+- `local_data/previews/`
+
 ### 阶段一：OpenCV 原型
 
 只处理前 5 张已拆分 PDF 或对应 PNG，不修改 PDF 文件。
@@ -80,8 +97,8 @@ OCR 仅用于提高置信度，不作为唯一判断依据。
 
 输入：
 
-- `output/pdf/YKJ125-00-00-2525_图纸_001.pdf` 至 `output/pdf/YKJ125-00-00-2525_图纸_005.pdf`
-- 或已渲染的 `tmp/pdfs/rotation_check/*.png`
+- `local_data/split_pdfs/YKJ125-00-00-2525_图纸_001.pdf` 至 `local_data/split_pdfs/YKJ125-00-00-2525_图纸_005.pdf`
+- 或已渲染的 `local_data/previews/rotation_check/*.png`
 
 输出：
 

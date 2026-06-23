@@ -11,6 +11,7 @@
 - `reports/rpd-rotation-detection.md`：需求与产品定义文档。
 - `TODO.md`：当前任务清单。
 - `AGENTS.md`：项目协作流程规则。
+- `scripts/detect_rotation_stage1.py`：阶段一 OpenCV 方向识别原型。
 
 ## 数据与隐私
 
@@ -29,5 +30,25 @@
 
 下一步：
 
-- 审核阶段一 OpenCV 原型计划。
-- 实现仅识别前 5 张图纸方向的 OpenCV 原型。
+- 复核阶段一调试图和低置信度样本。
+- 评估是否进入 OCR 辅助确认阶段。
+
+## 阶段一运行方式
+
+安装依赖：
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+运行前 5 张样例识别：
+
+```powershell
+python .\scripts\detect_rotation_stage1.py
+```
+
+输出会写入本地忽略目录：
+
+- `outputs/rotation-detection/stage1/results.json`
+- `outputs/rotation-detection/stage1/results.csv`
+- `outputs/rotation-detection/stage1/debug/*.png`

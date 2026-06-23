@@ -113,6 +113,19 @@
 
 详细规划见 `docs/confidence-improvement-plan.md`。
 
+## 实验样本扩展需求
+
+当前前 5 张样本过少，容易让置信度优化过拟合到少量页面。
+
+在继续改算法前，需要从本地私有原 PDF 中抽取前 20 张图纸作为实验样本：
+
+- 输出位置：`local_data/experiment_samples/first20/`
+- 单页 PDF：`local_data/experiment_samples/first20/pdf/`
+- 渲染 PNG：`local_data/experiment_samples/first20/png/`
+- 样本目录必须保持在 `.gitignore` 覆盖范围内，不上传 GitHub。
+- 抽取方式优先使用 `pypdf` 页面级复制，避免重采样或重压缩。
+- PNG 仅用于算法实验和调试，可由 Ghostscript 从单页 PDF 渲染。
+
 ## 风险
 
 - 图纸中存在明细表、技术要求表等非标题栏表格，可能干扰表格密度判断。

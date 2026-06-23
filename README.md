@@ -48,7 +48,7 @@
 python -m pip install -r requirements.txt
 ```
 
-运行前 5 张样例识别：
+运行前 20 张实验样本识别：
 
 ```powershell
 python .\scripts\detect_rotation_stage1.py

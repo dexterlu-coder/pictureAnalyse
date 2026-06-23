@@ -8,6 +8,7 @@
 
 - `rules/mechanical-drawing-rotation.md`：机械图纸旋转角度判断规则。
 - `docs/rotation-detection-plan.md`：旋转方向识别技术路线和阶段规划。
+- `docs/project-structure-cleanup-plan.md`：项目目录整理方案。
 - `reports/rpd-rotation-detection.md`：需求与产品定义文档。
 - `TODO.md`：当前任务清单。
 - `AGENTS.md`：项目协作流程规则。
@@ -18,6 +19,12 @@
 图纸原件、拆分 PDF、渲染 PNG、临时输出和个人草稿不进入公开仓库。
 
 本地私有资料统一放在 `local_data/`，并由 `.gitignore` 排除。
+
+当前本地私有目录约定：
+
+- `local_data/source_pdfs/`：原始 PDF。
+- `local_data/experiment_samples/first20/pdf/`：前 20 张单页 PDF 实验样本。
+- `local_data/experiment_samples/first20/png/`：前 20 张 PNG 实验样本。
 
 ## 当前阶段
 

@@ -52,3 +52,20 @@
 ## 后续人工精审
 
 当前 ground truth 是“候选真值集”，后续可以逐张人工精审并把 `source_level` 从 `consensus_accepted` 提升为 `manual_review`。在未完成逐张精审前，评估结果应表述为“相对候选真值”，不表述为最终工业级准确率。
+
+## 执行结果
+
+已完成：
+
+- `scripts/build_ground_truth.py`
+- `scripts/evaluate_rotation_results.py`
+
+当前本地评估摘要：
+
+- 总样本数：63。
+- 正确数：63。
+- 错误数：0。
+- 相对候选真值准确率：1.0。
+- 需要复核：1，`sample_042`。
+- 人工重点复核 ground truth：3。
+- OpenCV/MCP 共识接受 ground truth：60。

@@ -260,6 +260,32 @@
 
 详细计划见 `docs/ground-truth-evaluation-plan.md`。
 
+完成状态：已完成候选 ground truth 生成和自动评估脚本。
+
+本地生成文件：
+
+- `local_data/ground_truth/rotation_ground_truth.json`
+- `local_data/ground_truth/rotation_ground_truth.csv`
+- `outputs/rotation-detection/evaluation/evaluation_summary.json`
+- `outputs/rotation-detection/evaluation/evaluation_details.csv`
+- `outputs/rotation-detection/evaluation/errors.csv`
+- `outputs/rotation-detection/evaluation/review_required.csv`
+
+当前评估结果：
+
+- 总样本数：63。
+- 正确数：63。
+- 错误数：0。
+- 相对候选真值准确率：1.0。
+- 需要复核：1，`sample_042`。
+- 人工重点复核 ground truth：3。
+- OpenCV/MCP 共识接受 ground truth：60。
+- 最低置信度：0.2960。
+- 最高置信度：0.8535。
+- 平均置信度：0.614292。
+
+注意：该准确率是相对候选真值集的回归评估结果，不应表述为最终工业级无人复核准确率。后续逐张人工精审后，可更新 ground truth 来源等级并重新评估。
+
 ## 项目目录整理需求
 
 当前项目中存在历史输出、临时目录、重复样本和无关课程草稿，影响后续开发判断。

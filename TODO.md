@@ -58,12 +58,12 @@
 - [x] 全量 63 张重新运行并生成结果。
 - [x] 对比三方候选真值，确认不新增 OpenCV 分歧。
 - [x] 制定 ground truth 与自动评估计划。
-- [ ] 提交 ground truth 与自动评估计划，作为实现回滚点。
-- [ ] 实现 ground truth 生成脚本。
-- [ ] 实现 OpenCV 结果自动评估脚本。
-- [ ] 生成本地 ground truth 文件。
-- [ ] 运行全量 63 张评估。
-- [ ] 记录评估结果到 RPD。
+- [x] 提交 ground truth 与自动评估计划，作为实现回滚点。
+- [x] 实现 ground truth 生成脚本。
+- [x] 实现 OpenCV 结果自动评估脚本。
+- [x] 生成本地 ground truth 文件。
+- [x] 运行全量 63 张评估。
+- [x] 记录评估结果到 RPD。
 - [ ] 评估是否加入 OCR。
 - [ ] 设计低置信度视觉 MCP 兜底流程。
 - [ ] 批量处理完整 PDF。

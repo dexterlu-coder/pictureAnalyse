@@ -2,7 +2,7 @@
 
 ## 当前审核点
 
-- [ ] 用户审核阶段一详细计划。
+- [x] 用户审核阶段一详细计划。
 
 ## 阶段零：公开仓库整理
 
@@ -12,7 +12,7 @@
 - [x] 将 `tmp/pdfs/preview/*.png` 移入 `local_data/previews/preview/`。
 - [x] 将 `tmp/pdfs/rotation_check/*.png` 移入 `local_data/previews/rotation_check/`。
 - [x] 检查 `git status --short`，确认没有图纸资料待提交。
-- [ ] 用 GitHub CLI 创建 public 仓库并推送。
+- [x] 用 GitHub CLI 创建 public 仓库并推送。
 
 ## 阶段一：OpenCV 原型
 

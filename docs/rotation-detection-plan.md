@@ -46,7 +46,7 @@
 推荐本地私有目录：
 
 - `local_data/source_pdfs/`
-- `local_data/split_pdfs/`
+- `local_data/experiment_samples/all/`
 - `local_data/experiment_samples/first20/`
 
 ### 阶段一：OpenCV 原型
@@ -97,8 +97,8 @@ OCR 仅用于提高置信度，不作为唯一判断依据。
 
 输入：
 
-- `local_data/split_pdfs/YKJ125-00-00-2525_图纸_001.pdf` 至 `local_data/split_pdfs/YKJ125-00-00-2525_图纸_005.pdf`
-- 或已渲染的 `local_data/experiment_samples/first20/png/*.png`
+- `local_data/experiment_samples/all/pdf/*.pdf`
+- 或已渲染的 `local_data/experiment_samples/all/png/*.png`
 
 输出：
 

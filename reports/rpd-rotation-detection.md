@@ -149,6 +149,18 @@
 - 抽取方式优先使用 `pypdf` 页面级复制，避免重采样或重压缩。
 - PNG 仅用于算法实验和调试，可由 Ghostscript 从单页 PDF 渲染。
 
+## 全量实验样本需求
+
+为了进行更可靠的阈值校准，前 20 张样本仍然不足。需要将原 PDF 的全部 63 页抽取为实验样本：
+
+- 输出位置：`local_data/experiment_samples/all/`
+- 单页 PDF：`local_data/experiment_samples/all/pdf/`
+- 渲染 PNG：`local_data/experiment_samples/all/png/`
+- 样本目录必须保持在 `.gitignore` 覆盖范围内，不上传 GitHub。
+- 抽取方式继续使用 `pypdf` 页面级复制。
+- PNG 继续使用 Ghostscript 以 150 DPI 渲染。
+- 后续阈值校准应基于全量样本，而不是只基于前 5 或前 20 张。
+
 ## 项目目录整理需求
 
 当前项目中存在历史输出、临时目录、重复样本和无关课程草稿，影响后续开发判断。

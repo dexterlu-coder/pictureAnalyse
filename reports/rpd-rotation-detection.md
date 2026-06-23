@@ -299,6 +299,32 @@
 
 详细计划见 `docs/manual-review-pack-plan.md`。
 
+完成状态：已完成人工精审辅助包生成脚本和本地输出。
+
+新增脚本：
+
+- `scripts/build_manual_review_pack.py`
+
+本地生成文件：
+
+- `outputs/rotation-detection/manual_review/review_index.html`
+- `outputs/rotation-detection/manual_review/review_sheet.csv`
+- `outputs/rotation-detection/manual_review/review_sheet.json`
+
+当前复核包结果：
+
+- 复核记录：63。
+- 优先显示需要复核样本：`sample_042`。
+- 其余共识接受样本按低置信度优先排序。
+- HTML 中可直接查看图纸缩略图，并点击打开原 PNG。
+
+用户后续需要做的事情：
+
+- 打开 `outputs/rotation-detection/manual_review/review_index.html`。
+- 按顺序查看每张图纸标题栏是否位于候选位置。
+- 若候选正确，在 `review_sheet.csv` 中将 `human_status` 填为 `confirmed`。
+- 若候选错误，填写 `human_status=corrected`，并填写 `human_corrected_position` 与 `human_corrected_rotation_degrees`。
+
 ## 项目目录整理需求
 
 当前项目中存在历史输出、临时目录、重复样本和无关课程草稿，影响后续开发判断。

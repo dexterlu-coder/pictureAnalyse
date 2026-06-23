@@ -55,3 +55,14 @@
 - HTML 能在本地浏览器打开并看到图纸缩略图。
 - CSV/JSON 能作为后续人工修订和回写 ground truth 的输入。
 - 图纸和本地输出继续保持在 `.gitignore` 覆盖范围内。
+
+## 执行结果
+
+已完成：
+
+- `scripts/build_manual_review_pack.py`
+- `outputs/rotation-detection/manual_review/review_index.html`
+- `outputs/rotation-detection/manual_review/review_sheet.csv`
+- `outputs/rotation-detection/manual_review/review_sheet.json`
+
+复核包包含 63 条记录。排序规则已生效：`sample_042` 作为需要复核样本排在第一位，其余样本按低置信度优先排列。

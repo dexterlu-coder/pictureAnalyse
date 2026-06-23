@@ -184,6 +184,31 @@
 
 详细计划见 `docs/three-way-rotation-comparison-plan.md`。
 
+完成状态：已完成全量 63 张三方比对。
+
+输出位于本地忽略目录 `outputs/rotation-detection/comparison/`：
+
+- `mcp_results.json`
+- `manual_results.json`
+- `three_way_comparison.csv`
+- `disagreements.csv`
+
+当前结论：
+
+- 总样本数：63。
+- 三方需要关注样本：3。
+- OpenCV 相对人工复核错误：2，分别是 `sample_009`、`sample_010`。
+- OpenCV 低置信但方向正确：1，`sample_042`。
+- MCP 在严格“当前屏幕坐标”prompt 下，与人工复核样本一致。
+
+分歧明细：
+
+| 样本 | OpenCV | MCP | 人工复核 | 结论 |
+| --- | --- | --- | --- | --- |
+| `sample_009` | 0 度 | 270 度 | 270 度 | OpenCV 误判 |
+| `sample_010` | 270 度 | 0 度 | 0 度 | OpenCV 误判 |
+| `sample_042` | 270 度，低置信 | 270 度 | 270 度 | OpenCV 方向正确但应复核 |
+
 ## 项目目录整理需求
 
 当前项目中存在历史输出、临时目录、重复样本和无关课程草稿，影响后续开发判断。

@@ -224,6 +224,53 @@ def build_candidate_boxes(
     return list(unique.values())
 
 
+def build_edge_window_candidates(width: int, height: int) -> list[tuple[str, tuple[int, int, int, int]]]:
+    """Add deterministic edge windows so sparse title blocks are not lost in one giant contour."""
+    candidates: list[tuple[str, tuple[int, int, int, int]]] = []
+
+    vertical_windows = [
+        (0.00, 0.45),
+        (0.00, 0.60),
+        (0.10, 0.55),
+        (0.25, 0.60),
+        (0.40, 0.60),
+    ]
+    for side in ("left", "right"):
+        x1 = 0 if side == "left" else int(width * 0.60)
+        x2 = int(width * 0.40) if side == "left" else width
+        for y_start, y_size in vertical_windows:
+            y1 = int(height * y_start)
+            y2 = min(height, int(height * (y_start + y_size)))
+            candidates.append((side, (x1, y1, x2, y2)))
+
+    horizontal_windows = [
+        (0.00, 0.55),
+        (0.15, 0.70),
+        (0.35, 0.65),
+        (0.00, 1.00),
+        (0.45, 0.55),
+    ]
+    for side in ("top", "bottom"):
+        y1 = 0 if side == "top" else int(height * 0.60)
+        y2 = int(height * 0.40) if side == "top" else height
+        for x_start, x_size in horizontal_windows:
+            x1 = int(width * x_start)
+            x2 = min(width, int(width * (x_start + x_size)))
+            candidates.append((side, (x1, y1, x2, y2)))
+
+    return candidates
+
+
+def unique_candidate_boxes(
+    boxes: list[tuple[str, tuple[int, int, int, int]]],
+) -> list[tuple[str, tuple[int, int, int, int]]]:
+    unique: dict[tuple[str, int, int, int, int], tuple[str, tuple[int, int, int, int]]] = {}
+    for side, box in boxes:
+        key = (side, box[0] // 8, box[1] // 8, box[2] // 8, box[3] // 8)
+        unique[key] = (side, box)
+    return list(unique.values())
+
+
 def normalize(value: float, low: float, high: float) -> float:
     if high <= low:
         return 0.0
@@ -369,6 +416,36 @@ def choose_side(side_scores: list[SideScore]) -> SideScore:
     return chosen
 
 
+def choose_detection_side(
+    side_scores: list[SideScore],
+    candidates: list[CandidateScore],
+) -> tuple[str, CandidateScore | None, SideScore]:
+    side_fallback = choose_side(side_scores)
+    if not candidates:
+        return side_fallback.side, None, side_fallback
+
+    ordered_candidates = sorted(candidates, key=lambda item: item.score, reverse=True)
+    best_candidate = ordered_candidates[0]
+
+    # A real title block is a local structured table. Prefer that evidence when
+    # it is strong enough; otherwise keep the broad edge-band fallback.
+    #
+    # Dense assembly views often create top/left window false positives. When
+    # the fallback already points to the right-side title block, keep it unless
+    # the local candidate is a plausible bottom/right correction.
+    if side_fallback.side == "right" and best_candidate.side in {"top", "left"}:
+        fallback_candidate = next(
+            (candidate for candidate in ordered_candidates if candidate.side == side_fallback.side),
+            None,
+        )
+        return side_fallback.side, fallback_candidate or best_candidate, side_fallback
+
+    if best_candidate.evidence_score >= 0.43:
+        return best_candidate.side, best_candidate, side_fallback
+
+    return side_fallback.side, best_candidate, side_fallback
+
+
 def with_confidence_fields(candidates: list[CandidateScore]) -> list[CandidateScore]:
     ordered = sorted(candidates, key=lambda item: item.score, reverse=True)
     if not ordered:
@@ -455,22 +532,29 @@ def detect_one(path: Path) -> DetectionResult:
         score_side_region(side, bbox, horizontal, vertical, line_mask)
         for side, bbox in side_regions(width, height).items()
     ]
-    chosen_side = choose_side(side_scores)
+    side_fallback = choose_side(side_scores)
 
-    boxes = build_candidate_boxes(line_mask, width, height)
-    if not boxes:
-        boxes = [(chosen_side.side, tuple(chosen_side.bbox))]
+    boxes = unique_candidate_boxes(
+        build_candidate_boxes(line_mask, width, height)
+        + build_edge_window_candidates(width, height)
+    )
 
     candidates = [
         score_candidate(side, bbox, horizontal, vertical, line_mask)
         for side, bbox in boxes
     ]
     candidates = with_confidence_fields(candidates)
-    chosen_candidate = next((candidate for candidate in candidates if candidate.side == chosen_side.side), None)
+    chosen_side_name, chosen_candidate, chosen_side_fallback = choose_detection_side(side_scores, candidates)
+    chosen_side = next(
+        (score for score in side_scores if score.side == chosen_side_name),
+        chosen_side_fallback,
+    )
+    if chosen_candidate is None:
+        chosen_candidate = next((candidate for candidate in candidates if candidate.side == chosen_side.side), None)
     if chosen_candidate is None and candidates:
         chosen_candidate = candidates[0]
     confidence = confidence_from_side(chosen_side, side_scores, chosen_candidate)
-    needs_review = bool(confidence < 0.25)
+    needs_review = bool(confidence < 0.30)
 
     debug_path = DEBUG_DIR / f"{path.stem}_debug.png"
     write_image(debug_path, draw_debug(image, candidates, chosen_side, chosen_candidate))

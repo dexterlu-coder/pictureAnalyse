@@ -10,7 +10,7 @@ import numpy as np
 
 
 ROOT = Path(__file__).resolve().parents[1]
-INPUT_DIR = ROOT / "local_data" / "experiment_samples" / "first20" / "png"
+INPUT_DIR = ROOT / "local_data" / "experiment_samples" / "all" / "png"
 OUTPUT_DIR = ROOT / "outputs" / "rotation-detection" / "stage1"
 DEBUG_DIR = OUTPUT_DIR / "debug"
 
@@ -529,7 +529,7 @@ def main() -> None:
         raise SystemExit(f"Input directory does not exist: {INPUT_DIR}")
 
     DEBUG_DIR.mkdir(parents=True, exist_ok=True)
-    images = sorted(INPUT_DIR.glob("*.png"))[:20]
+    images = sorted(INPUT_DIR.glob("*.png"))
     if not images:
         raise SystemExit(f"No PNG files found in: {INPUT_DIR}")
 

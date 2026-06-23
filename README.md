@@ -23,6 +23,8 @@
 当前本地私有目录约定：
 
 - `local_data/source_pdfs/`：原始 PDF。
+- `local_data/experiment_samples/all/pdf/`：全量单页 PDF 实验样本。
+- `local_data/experiment_samples/all/png/`：全量 PNG 实验样本。
 - `local_data/experiment_samples/first20/pdf/`：前 20 张单页 PDF 实验样本。
 - `local_data/experiment_samples/first20/png/`：前 20 张 PNG 实验样本。
 
@@ -31,6 +33,7 @@
 已完成：
 
 - 前 5 张样例图纸的人工方向判断。
+- 全量 63 张图纸的本地实验样本抽取和渲染。
 - 判断规则沉淀。
 - OpenCV + OCR + 视觉 MCP 混合路线规划。
 - public 仓库发布前的数据隔离整理。
@@ -48,7 +51,7 @@
 python -m pip install -r requirements.txt
 ```
 
-运行前 20 张实验样本识别：
+运行全量实验样本识别：
 
 ```powershell
 python .\scripts\detect_rotation_stage1.py

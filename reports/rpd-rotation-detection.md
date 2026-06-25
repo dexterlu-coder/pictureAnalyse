@@ -322,8 +322,14 @@
 
 - 打开 `outputs/rotation-detection/manual_review/review_index.html`。
 - 按顺序查看每张图纸标题栏是否位于候选位置。
-- 若候选正确，在 `review_sheet.csv` 中将 `human_status` 填为 `confirmed`。
-- 若候选错误，填写 `human_status=corrected`，并填写 `human_corrected_position` 与 `human_corrected_rotation_degrees`。
+- 若候选正确，在 `review_form.csv` 的 `人工判断` 填 `正确`。
+- 若候选错误，在 `review_form.csv` 的 `人工判断` 填 `错误`，并填写 `正确标题栏位置` 与 `正确旋转角度`。
+
+人工表简化需求：
+
+- `review_sheet.csv` 字段过多，改为生成更适合用户填写的 `review_form.csv`。
+- 人工填写表只保留样本编号、候选位置、候选角度、人工判断、正确位置、正确角度和备注。
+- 技术字段继续保留在 `review_sheet.json`，不呈现在人工填写 CSV 中。
 
 ## 项目目录整理需求
 

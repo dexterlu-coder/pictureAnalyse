@@ -19,34 +19,31 @@
 本地忽略目录：
 
 - `outputs/rotation-detection/manual_review/review_index.html`
-- `outputs/rotation-detection/manual_review/review_sheet.csv`
+- `outputs/rotation-detection/manual_review/review_form.csv`
 - `outputs/rotation-detection/manual_review/review_sheet.json`
 
 公开仓库只提交生成脚本、计划、RPD 和 TODO，不提交图纸图片或人工复核输出。
 
-## 复核清单字段
+## 人工填写表字段
 
-每张图纸至少包含：
+人工填写 CSV 只呈现用户复核时必要的信息：
 
+- 序号。
 - 样本编号。
-- 图像路径。
-- 当前候选标题栏位置。
-- 当前候选旋转角度。
-- OpenCV 预测标题栏位置。
-- OpenCV 预测旋转角度。
-- OpenCV 置信度。
-- 是否需要复核。
-- ground truth 来源等级。
-- 人工确认状态，默认为空。
-- 人工纠正位置，默认为空。
-- 人工纠正角度，默认为空。
+- 候选标题栏位置。
+- 候选旋转角度。
+- 人工判断，默认为空，可填写 `正确` 或 `错误`。
+- 正确标题栏位置，候选错误时填写。
+- 正确旋转角度，候选错误时填写。
 - 备注，默认为空。
+
+完整机器字段保留在 `review_sheet.json` 中，避免干扰人工填写。
 
 ## HTML 报告要求
 
 - 按优先级排序：需要复核、非人工确认、低置信度优先。
 - 每张图纸显示缩略图和当前候选判断。
-- 明确标出 `manual_review` 与 `consensus_accepted`。
+- 默认只展示人工复核所需信息，不展示 OpenCV/MCP 细节。
 - 不直接修改 ground truth，只作为人工复核入口。
 
 ## 验收标准
@@ -62,7 +59,17 @@
 
 - `scripts/build_manual_review_pack.py`
 - `outputs/rotation-detection/manual_review/review_index.html`
-- `outputs/rotation-detection/manual_review/review_sheet.csv`
+- `outputs/rotation-detection/manual_review/review_form.csv`
 - `outputs/rotation-detection/manual_review/review_sheet.json`
 
 复核包包含 63 条记录。排序规则已生效：`sample_042` 作为需要复核样本排在第一位，其余样本按低置信度优先排列。
+
+## 人工表简化调整
+
+用户反馈 `review_sheet.csv` 字段过多，不适合一边对照 HTML 一边填写。
+
+调整要求：
+
+- CSV 改为 `review_form.csv`，只保留人工填写必要字段。
+- HTML 默认不展示 OpenCV 位置、置信度、来源等技术字段。
+- JSON 继续保留完整机器字段，用于后续自动回写或审计。

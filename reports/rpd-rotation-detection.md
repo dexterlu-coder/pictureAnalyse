@@ -635,6 +635,14 @@ YOLO/OBB 标签工具实现结果：
 - `python scripts\visualize_obb_labels.py` 已运行，生成 16 张 overlay 图和 `overlay_report.json`。
 - 本地输出目录：`local_data/yolo_obb_annotation_pack/smoke/validation/` 和 `local_data/yolo_obb_annotation_pack/smoke/overlays/`，均在 ignored 本地目录内，不进入 Git。
 
+OBB 标注工具选择与人工界面规则需求：
+
+- 用户没有标注工具，需要先调研并选择一个轻量、本地、支持旋转框或四点标注、可导出或转换为 Ultralytics OBB 格式的工具。
+- 标注工具选择前不开始真实标注，不训练 YOLO/OBB，不上传图纸。
+- 用户新增长期规则：需要人工填写的内容必须去掉不必要信息；所有图像排列必须优先考虑人工查看是否方便。
+- 该规则需要写入 `rules/human-review-interface.md`。
+- 详细计划见 `docs/annotation-tool-selection-plan.md`。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`
@@ -646,6 +654,7 @@ YOLO/OBB 标签工具实现结果：
 - `references/yolo-obb-debugging-research/README.md`
 - `docs/2026-06-25-yolo-obb-debugging-research.md`
 - `docs/yolo-obb-label-tools-plan.md`
+- `docs/annotation-tool-selection-plan.md`
 
 ## 项目目录整理需求
 

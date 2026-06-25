@@ -599,6 +599,13 @@ YOLO/OBB 冒烟标注子集执行结果：
 - 本地输出文件：`smoke_manifest.csv`、`smoke_manifest.json`、`smoke_review_index.html`、`smoke_labeling_task.md`、`smoke_summary.json`。
 - 当前只完成冒烟标注子集准备，尚未绘制 OBB 框，不能进入训练。
 
+YOLO/OBB 调试方案前置调研需求：
+
+- 在开始真实 OBB 标注和训练前，需要先调研 YOLO/OBB 类似工程的调试方案。
+- 调研重点包括数据集检查、标注可视化、小样本过拟合、训练指标、推理可视化、错误分层和后处理验证。
+- 本轮不安装训练依赖、不启动训练、不绘制真实 OBB 标签。
+- 详细计划见 `docs/yolo-obb-debugging-research-plan.md`。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`
@@ -606,6 +613,7 @@ YOLO/OBB 冒烟标注子集执行结果：
 - `docs/ocr-vlm-fallback-workflow-plan.md`
 - `docs/2026-06-25-local-title-block-detector-and-vlm-research.md`
 - `docs/yolo-obb-title-block-experiment-plan.md`
+- `docs/yolo-obb-debugging-research-plan.md`
 
 ## 项目目录整理需求
 

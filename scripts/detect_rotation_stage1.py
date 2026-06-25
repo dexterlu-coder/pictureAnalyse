@@ -519,6 +519,29 @@ def confidence_from_side(
     return round(max(0.0, min(1.0, confidence)), 4)
 
 
+def apply_local_candidate_confidence_floor(
+    confidence: float,
+    chosen_candidate: CandidateScore | None,
+    candidates: list[CandidateScore],
+) -> float:
+    if chosen_candidate is None or not candidates:
+        return confidence
+    best_score = max(candidate.score for candidate in candidates)
+    if best_score <= 0:
+        return confidence
+
+    # Very faint drawings can have broad side-band disagreement even when the
+    # local title-block candidate is the winner or a near tie. Keep these above
+    # the review threshold only when local evidence is strong enough.
+    if (
+        chosen_candidate.evidence_score >= 0.45
+        and chosen_candidate.score >= best_score * 0.97
+        and confidence < 0.32
+    ):
+        return 0.32
+    return confidence
+
+
 def draw_debug(
     image: np.ndarray,
     candidates: list[CandidateScore],
@@ -581,6 +604,7 @@ def detect_one(path: Path) -> DetectionResult:
     if chosen_candidate is None and candidates:
         chosen_candidate = candidates[0]
     confidence = confidence_from_side(chosen_side, side_scores, chosen_candidate)
+    confidence = apply_local_candidate_confidence_floor(confidence, chosen_candidate, candidates)
     needs_review = bool(confidence < 0.30)
 
     debug_path = DEBUG_DIR / f"{path.stem}_debug.png"

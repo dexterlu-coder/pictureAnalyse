@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 from dataclasses import asdict, dataclass
@@ -426,6 +427,10 @@ def choose_detection_side(
 
     ordered_candidates = sorted(candidates, key=lambda item: item.score, reverse=True)
     best_candidate = ordered_candidates[0]
+    side_scores_by_side = {score.side: score for score in side_scores}
+    candidates_by_side: dict[str, CandidateScore] = {}
+    for candidate in ordered_candidates:
+        candidates_by_side.setdefault(candidate.side, candidate)
 
     # A real title block is a local structured table. Prefer that evidence when
     # it is strong enough; otherwise keep the broad edge-band fallback.
@@ -439,6 +444,28 @@ def choose_detection_side(
             None,
         )
         return side_fallback.side, fallback_candidate or best_candidate, side_fallback
+
+    left_candidate = candidates_by_side.get("left")
+    best_side_score = side_scores_by_side.get(best_candidate.side)
+    left_side_score = side_scores_by_side.get("left")
+    if (
+        left_candidate is not None
+        and left_side_score is not None
+        and best_side_score is not None
+        and best_candidate.side in {"bottom", "right"}
+        and side_fallback.side != "right"
+        and left_candidate.evidence_score >= best_candidate.evidence_score * 0.93
+        and left_side_score.score >= best_side_score.score * 0.75
+    ):
+        return "left", left_candidate, side_fallback
+
+    if (
+        side_fallback.side == "left"
+        and left_candidate is not None
+        and best_candidate.side != "left"
+        and left_candidate.evidence_score >= best_candidate.evidence_score * 0.88
+    ):
+        return "left", left_candidate, side_fallback
 
     if best_candidate.evidence_score >= 0.43:
         return best_candidate.side, best_candidate, side_fallback
@@ -608,7 +635,25 @@ def write_results(results: list[DetectionResult]) -> None:
             writer.writerow(row)
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Detect mechanical drawing rotation from PNG images.")
+    parser.add_argument("--input-dir", type=Path, default=INPUT_DIR)
+    parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR)
+    args = parser.parse_args()
+    if not args.input_dir.is_absolute():
+        args.input_dir = ROOT / args.input_dir
+    if not args.output_dir.is_absolute():
+        args.output_dir = ROOT / args.output_dir
+    return args
+
+
 def main() -> None:
+    global INPUT_DIR, OUTPUT_DIR, DEBUG_DIR
+    args = parse_args()
+    INPUT_DIR = args.input_dir
+    OUTPUT_DIR = args.output_dir
+    DEBUG_DIR = OUTPUT_DIR / "debug"
+
     if not INPUT_DIR.exists():
         raise SystemExit(f"Input directory does not exist: {INPUT_DIR}")
 

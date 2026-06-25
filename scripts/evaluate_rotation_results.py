@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import re
@@ -34,6 +35,9 @@ class EvaluationRow:
 
 
 def sample_from_file(filename: str) -> str:
+    stem = Path(filename).stem
+    if stem.startswith("aug90_"):
+        return stem
     match = re.search(r"sample_(\d+)", filename)
     if not match:
         raise ValueError(f"Cannot parse sample id from filename: {filename}")
@@ -44,6 +48,21 @@ def load_json(path: Path) -> list[dict]:
     if not path.exists():
         raise SystemExit(f"Required file does not exist: {path}")
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Evaluate rotation detection results.")
+    parser.add_argument("--results", type=Path, default=RESULTS_PATH)
+    parser.add_argument("--ground-truth", type=Path, default=GROUND_TRUTH_PATH)
+    parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR)
+    args = parser.parse_args()
+    if not args.results.is_absolute():
+        args.results = ROOT / args.results
+    if not args.ground_truth.is_absolute():
+        args.ground_truth = ROOT / args.ground_truth
+    if not args.output_dir.is_absolute():
+        args.output_dir = ROOT / args.output_dir
+    return args
 
 
 def build_rows(results: list[dict], truth: list[dict]) -> list[EvaluationRow]:
@@ -109,20 +128,24 @@ def write_csv(path: Path, rows: list[EvaluationRow]) -> None:
         writer.writerows(dict_rows)
 
 
-def write_outputs(rows: list[EvaluationRow], summary: dict) -> None:
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    SUMMARY_OUTPUT.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
-    write_csv(DETAILS_OUTPUT, rows)
-    write_csv(ERRORS_OUTPUT, [row for row in rows if not row.correct])
-    write_csv(REVIEW_OUTPUT, [row for row in rows if row.needs_review])
+def write_outputs(rows: list[EvaluationRow], summary: dict, output_dir: Path) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    (output_dir / "evaluation_summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    write_csv(output_dir / "evaluation_details.csv", rows)
+    write_csv(output_dir / "errors.csv", [row for row in rows if not row.correct])
+    write_csv(output_dir / "review_required.csv", [row for row in rows if row.needs_review])
 
 
 def main() -> None:
-    rows = build_rows(load_json(RESULTS_PATH), load_json(GROUND_TRUTH_PATH))
+    args = parse_args()
+    rows = build_rows(load_json(args.results), load_json(args.ground_truth))
     if not rows:
         raise SystemExit("No evaluation rows generated.")
     summary = summarize(rows)
-    write_outputs(rows, summary)
+    write_outputs(rows, summary, args.output_dir)
 
     print(f"Total: {summary['total']}")
     print(f"Correct: {summary['correct']}")

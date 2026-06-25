@@ -474,6 +474,32 @@
 
 详细计划见 `docs/combined-evaluation-plan.md`。
 
+完成状态：已完成。
+
+新增脚本：
+
+- `scripts/run_combined_evaluation.py`
+
+本地输出：
+
+- `outputs/rotation-detection/combined_evaluation/combined_summary.json`
+- `outputs/rotation-detection/combined_evaluation/combined_summary.csv`
+
+联合评估结果：
+
+| 数据集 | 样本数 | 正确数 | 错误数 | 准确率 | 需要复核 |
+| --- | --- | --- | --- | --- | --- |
+| 原始人工确认集 | 63 | 63 | 0 | 1.0 | 1 |
+| 顺时针 90 度增强集 | 20 | 20 | 0 | 1.0 | 1 |
+| 合计 | 83 | 83 | 0 | 1.0 | 2 |
+
+复核样本：
+
+- 原始人工确认集：`sample_042`。
+- 顺时针 90 度增强集：`aug90_016_from_sample_042`。
+
+联合最低置信度：0.2823。联合最高置信度：0.8561。
+
 ## 项目目录整理需求
 
 当前项目中存在历史输出、临时目录、重复样本和无关课程草稿，影响后续开发判断。

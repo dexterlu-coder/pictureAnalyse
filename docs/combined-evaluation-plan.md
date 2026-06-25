@@ -63,3 +63,20 @@
 - 一条命令能完成原始集和增强集检测、评估、汇总。
 - 当前联合评估结果应为 83/83。
 - 输出文件在 ignored 目录，不进入 Git。
+
+## 执行结果
+
+已完成：
+
+- `scripts/run_combined_evaluation.py`
+- `outputs/rotation-detection/combined_evaluation/combined_summary.json`
+- `outputs/rotation-detection/combined_evaluation/combined_summary.csv`
+
+当前联合评估结果：
+
+- 总样本数：83。
+- 正确数：83。
+- 错误数：0。
+- 联合准确率：1.0。
+- 需要复核：2。
+- 复核样本：`sample_042`、`aug90_016_from_sample_042`。

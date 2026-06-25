@@ -16,9 +16,17 @@
 | Document orientation detection for OCR | 论文 | https://arxiv.org/abs/2511.04161 | 说明可以训练专用 4 类方向分类器，作为独立方向证据 | 通用文档方向不等同于机械标题栏方向 |
 | Engineering drawing hybrid VLM framework | 论文 | https://arxiv.org/abs/2510.21862 | 使用 YOLO 检测 layout/title block，再用 VLM 做语义解析，支持“专用检测 + VLM”分工 | 需要标注数据和训练成本 |
 | Engineering drawing parsing with OBB + Donut | 论文 | https://arxiv.org/abs/2505.01530 | 用 oriented bounding box 检测标题栏等区域，说明专用 detector 是可行第三路 | 目标是信息抽取，不只是方向识别 |
+| Ultralytics OBB | 官方文档 | https://docs.ultralytics.com/tasks/obb/ | 本地 YOLO/OBB 可以检测旋转框，适合标题栏框检测实验 | 需要标注数据 |
+| Qwen2.5-VL-3B-Instruct | 模型卡 | https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct | 可本地运行的小型 VLM 候选 | 仍需验证机械图纸稳定性 |
+| SmolVLM-500M-Instruct | 模型卡 | https://huggingface.co/HuggingFaceTB/SmolVLM-500M-Instruct | 更轻量的本地 VLM 候选 | 能力可能不足 |
+| Florence-2-base | 模型卡 | https://huggingface.co/microsoft/Florence-2-base | 本地视觉基础模型，可做 OCR/区域相关任务实验 | 不是专门的对话式图纸理解模型 |
+| MiniCPM-V-2_6 | 模型卡 | https://huggingface.co/openbmb/MiniCPM-V-2_6 | 支持多种本地推理/服务化方式，可作为私有化 VLM 候选 | 8B 级模型，重于标题栏 detector |
+| InternVL2.5-1B | 模型卡 | https://huggingface.co/OpenGVLab/InternVL2_5-1B | 1B 级本地 VLM 候选，适合小样本试验 | 对复杂机械图纸的方向判断需验证 |
 
 ## 当前结论
 
 外部样本支持我们的方向：不要把 OpenCV、OCR、VLM 做成无条件全量并行投票；更稳妥的是 OpenCV 主流程、置信度/冲突门控、疑难样本触发 OCR、专用标题栏/方向模型、VLM 条件并行，再做证据融合和人工复核。
 
 重要修正：OCR 和 VLM 不等价。OCR 是文字证据，VLM 是视觉语义证据；若需要第三类“方向识别”证据，应优先考虑专用标题栏检测器或专用方向分类器。
+
+本地化补充：YOLO/OBB 可以本地运行并导出为多种部署格式；本地 VLM 候选包括 Qwen2.5-VL、SmolVLM、Florence-2、MiniCPM-V、InternVL 等，但它们更适合作为疑难样本兜底，不应替代专用 detector。

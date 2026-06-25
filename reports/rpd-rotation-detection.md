@@ -560,11 +560,19 @@
 - VLM 结果必须结构化输出，并保留证据。
 - 外部 API 默认最小化调用，避免无必要上传图纸。
 
+进一步调研结论：
+
+- YOLO / OBB 可以作为本地小模型运行，适合训练 `title_block` 旋转框检测器。
+- 本地开源 VLM 可作为在线 VLM 禁用时的兜底方案。
+- 本地 VLM 候选包括 Qwen2.5-VL、SmolVLM、Florence-2、MiniCPM-V、InternVL 等。
+- 对本项目来说，专用标题栏检测模型优先级高于 VLM；VLM 更适合处理 detector 和 OpenCV 冲突后的疑难样本。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`
 - `docs/2026-06-25-ocr-vlm-workflow-research.md`
 - `docs/ocr-vlm-fallback-workflow-plan.md`
+- `docs/2026-06-25-local-title-block-detector-and-vlm-research.md`
 
 ## 项目目录整理需求
 

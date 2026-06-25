@@ -606,6 +606,16 @@ YOLO/OBB 调试方案前置调研需求：
 - 本轮不安装训练依赖、不启动训练、不绘制真实 OBB 标签。
 - 详细计划见 `docs/yolo-obb-debugging-research-plan.md`。
 
+YOLO/OBB 调试方案他山调研结论：
+
+- YOLO/OBB 正式训练前必须增加调试质量门，不能直接从标注跳到训练。
+- 标注后必须生成 overlay 图，确认 OBB 四点、点序、标题栏边界和误框情况。
+- 训练冒烟的第一目标是验证链路和小样本可过拟合，不是证明泛化。
+- 训练后不能只看 mAP，还要看召回、定位质量、val labels/pred 对照图和后处理映射结果。
+- 错误样本要分层为 `label_error`、`format_error`、`false_negative`、`false_positive`、`localization_error`、`postprocess_error`、`data_leakage`。
+- 标注 16 张前，下一步应先实现 YOLO/OBB 标签可视化脚本和数据集校验脚本。
+- 详细调研见 `references/yolo-obb-debugging-research/README.md` 和 `docs/2026-06-25-yolo-obb-debugging-research.md`。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`
@@ -614,6 +624,8 @@ YOLO/OBB 调试方案前置调研需求：
 - `docs/2026-06-25-local-title-block-detector-and-vlm-research.md`
 - `docs/yolo-obb-title-block-experiment-plan.md`
 - `docs/yolo-obb-debugging-research-plan.md`
+- `references/yolo-obb-debugging-research/README.md`
+- `docs/2026-06-25-yolo-obb-debugging-research.md`
 
 ## 项目目录整理需求
 

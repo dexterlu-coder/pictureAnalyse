@@ -114,6 +114,43 @@ class_index x1 y1 x2 y2 x3 y3 x4 y4
 6. 与 OpenCV 和人工 ground truth 比对。
 7. 记录是否适合进入证据融合流程。
 
+## 调试协议
+
+根据 YOLO/OBB 调试方案他山调研，正式训练前必须增加以下质量门：
+
+### 标注前
+
+- 冒烟集必须覆盖 `left/right/top/bottom`。
+- 同源原图和增强图不得同时泄漏到 train 与 val/test_focus。
+- 标注工具必须能导出或转换为 Ultralytics OBB 格式。
+
+### 标注后
+
+- 必须生成 OBB label overlay 调试图。
+- 必须检查 4 个归一化点是否都在 `[0, 1]` 范围内。
+- 必须检查是否误框明细表、技术要求表或非标题栏表格。
+- 如发现规则歧义，先修改标注规范，再继续标注。
+
+### 训练冒烟
+
+- 第一轮训练只验证链路，不追求泛化。
+- 若训练集也学不会，优先查标签格式、点序、类别 YAML 和标注一致性。
+- 若训练集能学会但验证集差，再考虑补样本、改拆分或调增强。
+
+### 错误分层
+
+每个失败样本必须归因到：
+
+- `label_error`
+- `format_error`
+- `false_negative`
+- `false_positive`
+- `localization_error`
+- `postprocess_error`
+- `data_leakage`
+
+详细调研见 `docs/2026-06-25-yolo-obb-debugging-research.md`。
+
 ## 验收标准
 
 冒烟实验通过标准：

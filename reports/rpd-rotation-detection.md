@@ -625,6 +625,16 @@ YOLO/OBB 标签工具实现计划：
 - 当前尚未人工标注，因此允许校验报告中出现 16 个缺失标签。
 - 详细计划见 `docs/yolo-obb-label-tools-plan.md`。
 
+YOLO/OBB 标签工具实现结果：
+
+- 新增公共工具：`scripts/obb_utils.py`。
+- 新增校验脚本：`scripts/validate_obb_dataset.py`。
+- 新增可视化脚本：`scripts/visualize_obb_labels.py`。
+- `python -m py_compile scripts\obb_utils.py scripts\validate_obb_dataset.py scripts\visualize_obb_labels.py` 通过。
+- `python scripts\validate_obb_dataset.py` 已运行，检查 smoke 集 16 张图片：图片均存在且可读取，当前 16 个标签文件均缺失，产生 16 个 `missing_label` 警告、0 个错误，符合尚未人工标注的预期。
+- `python scripts\visualize_obb_labels.py` 已运行，生成 16 张 overlay 图和 `overlay_report.json`。
+- 本地输出目录：`local_data/yolo_obb_annotation_pack/smoke/validation/` 和 `local_data/yolo_obb_annotation_pack/smoke/overlays/`，均在 ignored 本地目录内，不进入 Git。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

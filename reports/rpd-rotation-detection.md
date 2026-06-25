@@ -616,6 +616,15 @@ YOLO/OBB 调试方案他山调研结论：
 - 标注 16 张前，下一步应先实现 YOLO/OBB 标签可视化脚本和数据集校验脚本。
 - 详细调研见 `references/yolo-obb-debugging-research/README.md` 和 `docs/2026-06-25-yolo-obb-debugging-research.md`。
 
+YOLO/OBB 标签工具实现计划：
+
+- 新增 `scripts/visualize_obb_labels.py`，用于将 OBB 标签画回原图生成 overlay。
+- 新增 `scripts/validate_obb_dataset.py`，用于检查标签格式、坐标范围、类别、图片/标签匹配和同源拆分泄漏。
+- 默认输入为 `local_data/yolo_obb_annotation_pack/smoke/smoke_manifest.csv`。
+- 默认标签目录为 `local_data/yolo_obb_annotation_pack/smoke/labels/`。
+- 当前尚未人工标注，因此允许校验报告中出现 16 个缺失标签。
+- 详细计划见 `docs/yolo-obb-label-tools-plan.md`。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`
@@ -626,6 +635,7 @@ YOLO/OBB 调试方案他山调研结论：
 - `docs/yolo-obb-debugging-research-plan.md`
 - `references/yolo-obb-debugging-research/README.md`
 - `docs/2026-06-25-yolo-obb-debugging-research.md`
+- `docs/yolo-obb-label-tools-plan.md`
 
 ## 项目目录整理需求
 

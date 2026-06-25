@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import argparse
 import csv
+import html
 import json
+import os
 from pathlib import Path
 
 
@@ -180,9 +182,183 @@ def summarize(records: list[dict]) -> dict:
     }
 
 
+def select_smoke_records(records: list[dict], count: int) -> list[dict]:
+    selected: list[dict] = []
+    selected_keys: set[str] = set()
+
+    def add(record: dict) -> None:
+        key = record["sample"]
+        if key not in selected_keys and len(selected) < count:
+            selected.append(record)
+            selected_keys.add(key)
+
+    for sample in sorted(FOCUS_SAMPLES):
+        for record in records:
+            if record["sample"] == sample:
+                add(record)
+                break
+
+    required_positions = ["bottom", "left", "right", "top"]
+    for position in required_positions:
+        for record in records:
+            if record["title_block_position"] == position:
+                add(record)
+                break
+
+    by_position: dict[str, list[dict]] = {}
+    for record in records:
+        by_position.setdefault(record["title_block_position"], []).append(record)
+
+    while len(selected) < count:
+        progressed = False
+        for position in required_positions:
+            for record in by_position.get(position, []):
+                if record["sample"] not in selected_keys:
+                    add(record)
+                    progressed = True
+                    break
+            if len(selected) >= count:
+                break
+        if not progressed:
+            break
+
+    return selected
+
+
+def rel_for_html(path: str, html_path: Path) -> str:
+    target = ROOT / path
+    return Path(os.path.relpath(target, html_path.parent)).as_posix()
+
+
+def write_smoke_html(path: Path, records: list[dict]) -> None:
+    rows = []
+    for idx, record in enumerate(records, start=1):
+        image_src = html.escape(rel_for_html(record["image_path"], path))
+        rows.append(
+            f"""
+      <section class="item">
+        <div class="meta">
+          <strong>{idx}. {html.escape(record["sample"])}</strong>
+          <span>{html.escape(record["dataset"])}</span>
+          <span>位置：{html.escape(record["precise_title_block_position"] or record["title_block_position"])}</span>
+          <span>旋转：{record["rotation_degrees"]}°</span>
+        </div>
+        <img src="{image_src}" alt="{html.escape(record["sample"])}" />
+      </section>"""
+        )
+
+    path.write_text(
+        f"""<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>YOLO/OBB 标题栏冒烟标注集</title>
+  <style>
+    body {{
+      margin: 0;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      color: #202124;
+      background: #f5f6f7;
+    }}
+    header {{
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      padding: 16px 24px;
+      background: #ffffff;
+      border-bottom: 1px solid #dfe3e8;
+    }}
+    h1 {{
+      margin: 0 0 6px;
+      font-size: 20px;
+    }}
+    p {{
+      margin: 0;
+      font-size: 14px;
+      color: #5f6368;
+    }}
+    main {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 16px;
+      padding: 16px;
+    }}
+    .item {{
+      background: #ffffff;
+      border: 1px solid #dfe3e8;
+      border-radius: 6px;
+      overflow: hidden;
+    }}
+    .meta {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      border-bottom: 1px solid #edf0f2;
+      font-size: 13px;
+    }}
+    img {{
+      display: block;
+      width: 100%;
+      height: 520px;
+      object-fit: contain;
+      background: #fafafa;
+    }}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>YOLO/OBB 标题栏冒烟标注集</h1>
+    <p>请按标注规范只框标题栏主体。该页面仅用于查看样本，正式 OBB 坐标仍需使用标注工具绘制。</p>
+  </header>
+  <main>
+    {"".join(rows)}
+  </main>
+</body>
+</html>
+""",
+        encoding="utf-8",
+    )
+
+
+def write_smoke_pack(output_dir: Path, records: list[dict], count: int) -> dict:
+    smoke_dir = output_dir / "smoke"
+    smoke_dir.mkdir(parents=True, exist_ok=True)
+    smoke_records = select_smoke_records(records, count)
+    summary = summarize(smoke_records)
+
+    write_csv(smoke_dir / "smoke_manifest.csv", smoke_records)
+    (smoke_dir / "smoke_manifest.json").write_text(
+        json.dumps(smoke_records, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    (smoke_dir / "smoke_summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    write_smoke_html(smoke_dir / "smoke_review_index.html", smoke_records)
+    (smoke_dir / "smoke_labeling_task.md").write_text(
+        """# YOLO/OBB 冒烟标注任务
+
+请优先标注 `smoke_manifest.csv` 中的 16 张样本。
+
+要求：
+
+- 类别统一为 `title_block`。
+- 只框标题栏主体，不把整张明细表一起框入。
+- 保存为 Ultralytics OBB 标签格式。
+- 标注完成后再进入训练冒烟实验。
+""",
+        encoding="utf-8",
+    )
+    return summary
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build a local YOLO/OBB annotation pack.")
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument("--smoke-count", type=int, default=16)
     args = parser.parse_args()
 
     output_dir = args.output_dir
@@ -202,8 +378,18 @@ def main() -> int:
         encoding="utf-8",
     )
     write_labeling_guide(output_dir / "labeling_guide.md")
+    smoke_summary = write_smoke_pack(output_dir, records, args.smoke_count)
 
-    print(json.dumps(summary, ensure_ascii=False, indent=2))
+    print(
+        json.dumps(
+            {
+                "full_pack": summary,
+                "smoke_pack": smoke_summary,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
     return 0
 
 

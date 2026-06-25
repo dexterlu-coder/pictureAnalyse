@@ -589,6 +589,16 @@ YOLO/OBB 标注准备包执行结果：
 - 该准备包只生成清单和标注说明，不复制图纸、不上传图纸、不训练模型。
 - 用户已审核并同意 `docs/yolo-obb-title-block-experiment-plan.md` 中的标注规范，允许进入 12 到 20 张 OBB 冒烟标注准备。
 
+YOLO/OBB 冒烟标注子集执行结果：
+
+- 脚本已扩展为同时生成 `local_data/yolo_obb_annotation_pack/smoke/`。
+- 冒烟子集样本数：16。
+- 数据集分布：原始人工确认集 10，顺时针 90 度增强集 6。
+- 标题栏粗位置分布：`left` 6，`right` 5，`top` 4，`bottom` 1。
+- 建议拆分来源：`test_focus` 12，`train` 4。
+- 本地输出文件：`smoke_manifest.csv`、`smoke_manifest.json`、`smoke_review_index.html`、`smoke_labeling_task.md`、`smoke_summary.json`。
+- 当前只完成冒烟标注子集准备，尚未绘制 OBB 框，不能进入训练。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

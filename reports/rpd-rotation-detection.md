@@ -587,6 +587,7 @@ YOLO/OBB 标注准备包执行结果：
 - 建议拆分：`train` 57，`val` 14，`test_focus` 12。
 - 标题栏粗位置分布：`right` 32，`top` 30，`left` 20，`bottom` 1。
 - 该准备包只生成清单和标注说明，不复制图纸、不上传图纸、不训练模型。
+- 用户已审核并同意 `docs/yolo-obb-title-block-experiment-plan.md` 中的标注规范，允许进入 12 到 20 张 OBB 冒烟标注准备。
 
 详细文件：
 

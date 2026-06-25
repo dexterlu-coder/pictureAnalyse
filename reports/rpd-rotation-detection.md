@@ -643,6 +643,21 @@ OBB 标注工具选择与人工界面规则需求：
 - 该规则需要写入 `rules/human-review-interface.md`。
 - 详细计划见 `docs/annotation-tool-selection-plan.md`。
 
+OBB 标注工具选择结果：
+
+- 当前推荐 `Labelme + 项目内转换脚本`。
+- 选择理由：本地运行、支持 polygon、安装使用轻，适合 16 张冒烟样本；Labelme JSON 易转换为 Ultralytics OBB。
+- CVAT 功能更强，但 Docker/Web 平台成本较高，更适合后续多人或大批量标注。
+- 新增规则文件：`rules/human-review-interface.md`。
+- 新增操作说明：`docs/labelme-obb-annotation-workflow.md`。
+- 新增调研记录：`docs/2026-06-25-obb-annotation-tool-selection.md`。
+- 新增调研索引：`references/annotation-tool-selection/README.md`。
+- 新增转换脚本：`scripts/convert_labelme_to_yolo_obb.py`。
+- `scripts/build_yolo_obb_annotation_pack.py` 的 smoke 查看页生成逻辑已按人工界面规则调整：减少展示字段、放大图像显示区域，方便查看标题栏。
+- 使用临时输出目录验证过新的 smoke 查看页生成逻辑；正式 `local_data/yolo_obb_annotation_pack/smoke/smoke_manifest.csv` 当前被占用，未覆盖正式本地 smoke 包。
+- `python -m py_compile scripts\convert_labelme_to_yolo_obb.py` 通过。
+- `python scripts\convert_labelme_to_yolo_obb.py --allow-missing` 已运行；当前尚未标注，因此结果为 `converted=0`、`missing_json=16`、`errors=0`，符合预期。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`
@@ -655,6 +670,10 @@ OBB 标注工具选择与人工界面规则需求：
 - `docs/2026-06-25-yolo-obb-debugging-research.md`
 - `docs/yolo-obb-label-tools-plan.md`
 - `docs/annotation-tool-selection-plan.md`
+- `rules/human-review-interface.md`
+- `references/annotation-tool-selection/README.md`
+- `docs/2026-06-25-obb-annotation-tool-selection.md`
+- `docs/labelme-obb-annotation-workflow.md`
 
 ## 项目目录整理需求
 

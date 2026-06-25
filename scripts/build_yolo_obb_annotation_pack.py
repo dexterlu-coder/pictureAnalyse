@@ -239,7 +239,6 @@ def write_smoke_html(path: Path, records: list[dict]) -> None:
       <section class="item">
         <div class="meta">
           <strong>{idx}. {html.escape(record["sample"])}</strong>
-          <span>{html.escape(record["dataset"])}</span>
           <span>位置：{html.escape(record["precise_title_block_position"] or record["title_block_position"])}</span>
           <span>旋转：{record["rotation_degrees"]}°</span>
         </div>
@@ -279,7 +278,7 @@ def write_smoke_html(path: Path, records: list[dict]) -> None:
     }}
     main {{
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(680px, 1fr));
       gap: 16px;
       padding: 16px;
     }}
@@ -301,7 +300,7 @@ def write_smoke_html(path: Path, records: list[dict]) -> None:
     img {{
       display: block;
       width: 100%;
-      height: 520px;
+      height: 760px;
       object-fit: contain;
       background: #fafafa;
     }}

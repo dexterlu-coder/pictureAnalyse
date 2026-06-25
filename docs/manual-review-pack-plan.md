@@ -80,3 +80,19 @@
 - 已删除旧的复杂 `review_sheet.csv`。
 - `review_index.html` 默认只展示样本编号、候选标题栏位置和候选旋转角度。
 - `review_sheet.json` 继续保留完整机器字段。
+
+## 人工复核结果回写计划
+
+用户已完成 `review_form.csv` 人工复核：
+
+- 63 条旋转角度全部正确。
+- 自动标题栏粗位置判断全部正确。
+- 用户补充了更精确的标题栏位置标注。
+
+下一步需要：
+
+- 新增脚本读取 `review_form.csv`，兼容 UTF-8 BOM 和 GBK 编码。
+- 将 `人工判断=正确` 的记录升级为人工确认 ground truth。
+- 将 `正确标题栏位置` 写入 `precise_title_block_position` 字段。
+- 保留原有粗粒度 `title_block_position`，用于当前旋转方向评估。
+- 重新运行评估，确认 63 条 ground truth 全部为人工确认。

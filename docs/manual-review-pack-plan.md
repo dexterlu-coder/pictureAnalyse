@@ -96,3 +96,11 @@
 - 将 `正确标题栏位置` 写入 `precise_title_block_position` 字段。
 - 保留原有粗粒度 `title_block_position`，用于当前旋转方向评估。
 - 重新运行评估，确认 63 条 ground truth 全部为人工确认。
+
+执行结果：
+
+- 已新增 `scripts/import_manual_review_form.py`。
+- 已将 63 条 ground truth 升级为 `manual_review_full`。
+- 已写入 `precise_title_block_position`。
+- 精确位置分布为：`右上方` 30、`右侧` 2、`上方` 30、`下方` 1。
+- 重新评估后，OpenCV 相对人工确认 ground truth 为 63/63 正确。

@@ -73,3 +73,10 @@
 - CSV 改为 `review_form.csv`，只保留人工填写必要字段。
 - HTML 默认不展示 OpenCV 位置、置信度、来源等技术字段。
 - JSON 继续保留完整机器字段，用于后续自动回写或审计。
+
+执行结果：
+
+- 已生成 `outputs/rotation-detection/manual_review/review_form.csv`。
+- 已删除旧的复杂 `review_sheet.csv`。
+- `review_index.html` 默认只展示样本编号、候选标题栏位置和候选旋转角度。
+- `review_sheet.json` 继续保留完整机器字段。

@@ -13,7 +13,7 @@ EVALUATION_DETAILS_PATH = ROOT / "outputs" / "rotation-detection" / "evaluation"
 PNG_DIR = ROOT / "local_data" / "experiment_samples" / "all" / "png"
 OUTPUT_DIR = ROOT / "outputs" / "rotation-detection" / "manual_review"
 HTML_OUTPUT = OUTPUT_DIR / "review_index.html"
-CSV_OUTPUT = OUTPUT_DIR / "review_sheet.csv"
+FORM_CSV_OUTPUT = OUTPUT_DIR / "review_form.csv"
 JSON_OUTPUT = OUTPUT_DIR / "review_sheet.json"
 
 
@@ -23,6 +23,9 @@ POSITION_LABELS = {
     "top": "上方或左上方",
     "right": "右侧或右上方",
 }
+
+POSITION_OPTIONS = "bottom/left/top/right"
+ROTATION_OPTIONS = "0/90/180/270"
 
 
 @dataclass
@@ -109,9 +112,23 @@ def build_records() -> list[ReviewRecord]:
     return sorted(records, key=lambda item: (item.priority, item.opencv_confidence, item.sample))
 
 
-def write_csv(records: list[ReviewRecord]) -> None:
-    rows = [asdict(record) for record in records]
-    with CSV_OUTPUT.open("w", encoding="utf-8-sig", newline="") as handle:
+def write_form_csv(records: list[ReviewRecord]) -> None:
+    rows = []
+    for index, record in enumerate(records, start=1):
+        rows.append(
+            {
+                "序号": index,
+                "样本编号": record.sample,
+                "候选标题栏位置": POSITION_LABELS.get(record.candidate_position, record.candidate_position),
+                "候选旋转角度": record.candidate_rotation_degrees,
+                "人工判断": "",
+                "正确标题栏位置": "",
+                "正确旋转角度": "",
+                "备注": "",
+            }
+        )
+
+    with FORM_CSV_OUTPUT.open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()))
         writer.writeheader()
         writer.writerows(rows)
@@ -133,9 +150,8 @@ def record_card(record: ReviewRecord) -> str:
     relative_image_src = f"../../../{image_src}"
     source_kind = "manual" if record.verified_by_human else "consensus"
     review_badge = badge("需要复核", "warn") if record.needs_review else badge("无需复核", "ok")
-    source_badge = badge("人工重点复核" if record.verified_by_human else "共识接受", source_kind)
+    source_badge = badge("已人工看过" if record.verified_by_human else "待人工确认", source_kind)
     position_label = POSITION_LABELS.get(record.candidate_position, record.candidate_position)
-    opencv_label = POSITION_LABELS.get(record.opencv_position, record.opencv_position)
     return f"""
     <article class="card">
       <a class="image-link" href="{html.escape(relative_image_src)}" target="_blank">
@@ -149,12 +165,9 @@ def record_card(record: ReviewRecord) -> str:
         <dl>
           <dt>候选标题栏位置</dt><dd>{html.escape(position_label)}</dd>
           <dt>候选旋转角度</dt><dd>{record.candidate_rotation_degrees} 度</dd>
-          <dt>OpenCV 位置</dt><dd>{html.escape(opencv_label)}</dd>
-          <dt>OpenCV 角度</dt><dd>{record.opencv_rotation_degrees} 度</dd>
-          <dt>OpenCV 置信度</dt><dd>{record.opencv_confidence:.4f}</dd>
-          <dt>来源</dt><dd>{html.escape(record.source_basis)}</dd>
+          <dt>样本编号</dt><dd>{html.escape(record.sample)}</dd>
         </dl>
-        <p class="hint">人工复核时只判断当前图片屏幕坐标中的标题栏位置：下=0 度，左=90 度，上=180 度，右=270 度。</p>
+        <p class="hint">对照 review_form.csv 填写：候选正确就填“正确”；候选错误就填“错误”，并补正确位置和角度。位置可填 {POSITION_OPTIONS}，角度可填 {ROTATION_OPTIONS}。</p>
       </div>
     </article>
     """
@@ -281,7 +294,7 @@ def write_html(records: list[ReviewRecord]) -> None:
       <span>需要复核：{needs_review}</span>
       <span>人工重点复核：{human_verified}</span>
       <span>共识接受待确认：{consensus}</span>
-      <span>清单：review_sheet.csv / review_sheet.json</span>
+      <span>填写表：review_form.csv</span>
     </div>
   </header>
   <main>
@@ -299,12 +312,12 @@ def main() -> None:
     records = build_records()
     if not records:
         raise SystemExit("No review records generated.")
-    write_csv(records)
+    write_form_csv(records)
     write_json(records)
     write_html(records)
     print(f"Review records: {len(records)}")
     print(f"HTML: {HTML_OUTPUT.relative_to(ROOT)}")
-    print(f"CSV: {CSV_OUTPUT.relative_to(ROOT)}")
+    print(f"Form CSV: {FORM_CSV_OUTPUT.relative_to(ROOT)}")
     print(f"JSON: {JSON_OUTPUT.relative_to(ROOT)}")
 
 

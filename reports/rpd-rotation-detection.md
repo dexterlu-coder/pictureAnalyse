@@ -577,6 +577,17 @@
 - VLM 排在 OpenCV、YOLO/OBB、OCR 之后，用于疑难样本兜底解释。
 - 第一轮执行动作是生成 YOLO/OBB 标注准备包，不直接训练模型。
 
+YOLO/OBB 标注准备包执行结果：
+
+- 新增脚本：`scripts/build_yolo_obb_annotation_pack.py`。
+- 本地输出目录：`local_data/yolo_obb_annotation_pack/`。
+- 输出文件：`annotation_manifest.csv`、`annotation_manifest.json`、`classes.txt`、`labeling_guide.md`、`pack_summary.json`。
+- 样本总数：83。
+- 数据集分布：原始人工确认集 63，顺时针 90 度增强集 20。
+- 建议拆分：`train` 57，`val` 14，`test_focus` 12。
+- 标题栏粗位置分布：`right` 32，`top` 30，`left` 20，`bottom` 1。
+- 该准备包只生成清单和标注说明，不复制图纸、不上传图纸、不训练模型。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

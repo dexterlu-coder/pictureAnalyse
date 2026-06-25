@@ -565,6 +565,8 @@
 - YOLO / OBB 可以作为本地小模型运行，适合训练 `title_block` 旋转框检测器。
 - 本地开源 VLM 可作为在线 VLM 禁用时的兜底方案。
 - 本地 VLM 候选包括 Qwen2.5-VL、SmolVLM、Florence-2、MiniCPM-V、InternVL 等。
+- VLM 兜底第一轮应先用云端模型验证收益，再按配置压力测试本地模型。
+- 流程表述统一为：`本地/云端 VLM 兜底解释疑难样本`。
 - 对本项目来说，专用标题栏检测模型优先级高于 VLM；VLM 更适合处理 detector 和 OpenCV 冲突后的疑难样本。
 
 详细文件：

@@ -30,3 +30,5 @@
 重要修正：OCR 和 VLM 不等价。OCR 是文字证据，VLM 是视觉语义证据；若需要第三类“方向识别”证据，应优先考虑专用标题栏检测器或专用方向分类器。
 
 本地化补充：YOLO/OBB 可以本地运行并导出为多种部署格式；本地 VLM 候选包括 Qwen2.5-VL、SmolVLM、Florence-2、MiniCPM-V、InternVL 等，但它们更适合作为疑难样本兜底，不应替代专用 detector。
+
+配置压力补充：第一轮 VLM 兜底实验应先使用云端模型，降低测试复杂性；只有当云端 VLM 对疑难样本确有增益时，才进入本地化验证。本地模型测试顺序应从轻到重：SmolVLM-500M / Florence-2-base -> InternVL2.5-1B -> Qwen2.5-VL-3B -> MiniCPM-V-2.6。

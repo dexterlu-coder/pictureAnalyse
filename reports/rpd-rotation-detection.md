@@ -917,6 +917,13 @@ YOLO/OBB smoke overlay 人工复查结果：
 - 下一步必须先归档当前固定审核入口，再规划 YOLO/OBB 训练前最终数据集构建。
 - 仍不得直接启动训练；训练前需要明确数据集构建策略、训练/验证划分和回滚点。
 
+固定入口归档结果：
+
+- 已归档第二轮 overlay 复查材料到 `local_data/review_inbox/archive/round2_overlay_review_20260626_approved/`。
+- 已重置 `local_data/review_inbox/current/`。
+- 当前 `current/` 只保留 `README.md`，提示当前没有待用户审核、填写或标注的文件。
+- 归档目录保留 labels、overlays、overlay_review、validation、to_label、references、manifest、转换报告和复查表。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

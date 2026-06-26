@@ -1025,6 +1025,15 @@ YOLO/OBB 第二轮首训计划需求：
 
 - `docs/plans/yolo-obb-round2-training-plan.md`
 
+YOLO/OBB 第二轮首训环境执行需求：
+
+- 用户已同意按照 `docs/plans/yolo-obb-round2-training-plan.md` 继续。
+- 本阶段必须先检查本机是否已安装 Ultralytics，不得直接假设环境可用。
+- 若未安装 Ultralytics，需要安装训练依赖；安装后再次确认 `yolo` 命令和 Python 包可用。
+- 训练前再次确认 `local_data/yolo_obb_dataset_round2/data.yaml`、`dataset_summary.json`、`dataset_validation.json` 存在且校验无问题。
+- 训练产物必须写入 ignored 的 `local_data/yolo_runs/`。
+- 若环境安装失败或训练命令不可用，必须停在环境问题分析，不得跳过到下一阶段。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

@@ -1051,6 +1051,37 @@ YOLO/OBB 第二轮首训环境执行需求：
 - Ultralytics 实际配置目录为 `local_data/ultralytics_config/Ultralytics/`，保持在 ignored 的本地目录内，不进入公开仓库。
 - Windows 控制台对 Ultralytics 包说明中的 emoji 存在 GBK 编码问题，后续训练命令统一设置 `PYTHONIOENCODING=utf-8`。
 
+YOLO/OBB 第二轮首训结果：
+
+- 训练模型：`yolo11n-obb.pt`。
+- 训练设备：CPU。
+- 训练轮数：40。
+- 训练数据：`local_data/yolo_obb_dataset_round2/data.yaml`。
+- 训练输出：`local_data/yolo_runs/round2_yolo11n_obb/`。
+- 最后一轮 val 指标约为：precision 0.84772，recall 0.85714，mAP50 0.94389，mAP50-95 0.89811。
+- 训练流程已完成，未出现数据加载、标签格式或路径错误。
+
+产物整理说明：
+
+- Ultralytics 将相对 `project=local_data/yolo_runs` 解释到默认 `runs/obb/` 下，已将实际训练目录移动回 `local_data/yolo_runs/round2_yolo11n_obb/`。
+- 已将下载的预训练权重移动到 `local_data/models/yolo11n-obb.pt`。
+- 已在 `.gitignore` 增加 `/runs/` 和常见模型权重后缀，防止训练产物误进入公开仓库。
+
+YOLO/OBB 首训预测结果：
+
+- 已使用 `best.pt` 对 train、val、test 分别运行 predict。
+- train：26 张全部检出预测框。
+- val：7 张全部检出预测框，其中 `sample_009` 出现 2 个预测框。
+- test：7 张全部检出预测框，其中 `unclear90_001_from_sample_001` 出现 3 个预测框。
+- 多框样本需要重点人工判断是否属于可接受冗余框、误检相似表格，或后处理应只取最高置信标题栏框。
+
+固定审核入口：
+
+- 当前待用户复查目录：`local_data/review_inbox/current/prediction_review/`。
+- 当前复查页面：`local_data/review_inbox/current/prediction_review/review_index.html`。
+- 当前填写表：`local_data/review_inbox/current/prediction_review/review_form.csv`。
+- 本轮只要求复查 14 张 val/test 预测图，人工表只保留必要字段。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

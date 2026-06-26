@@ -165,8 +165,10 @@
 - [x] 制定 YOLO/OBB 第二轮首训计划。
 - [x] 检查 Ultralytics 训练环境。
 - [x] 安装 Ultralytics 训练依赖。
-- [ ] 运行 YOLO/OBB 第二轮首训。
-- [ ] 生成并复查 YOLO/OBB 首训预测结果。
+- [x] 运行 YOLO/OBB 第二轮首训。
+- [x] 生成 YOLO/OBB 首训预测结果。
+- [x] 将 YOLO/OBB 首训预测复查包发布到固定入口。
+- [ ] 用户复查 YOLO/OBB 首训 val/test 预测结果。
 - [ ] 设计 OCR 小实验。
 - [ ] 设计云端 VLM 兜底小实验。
 - [ ] 设计本地 VLM 梯度测试方案。

@@ -716,6 +716,14 @@ ISAT smoke 全量转换与校验结果：
 - 已抽查 `sample_010`、`aug90_002_from_sample_010`、`sample_020` overlay，标题栏框位置正确。
 - 额外非 smoke JSON 暂不进入转换、校验或训练。
 
+YOLO/OBB 冒烟训练准备需求：
+
+- 当前 16 张 smoke 标签已具备进入训练链路验证的条件。
+- 当前环境未安装 Ultralytics，因此先构建本地 Ultralytics OBB 数据集结构，不直接训练。
+- 冒烟训练准备采用过拟合链路验证策略：`train=16`、`val=16`，该设置只用于验证数据加载和训练链路，不用于泛化评估。
+- 本轮不安装 Ultralytics、不下载权重、不启动训练、不提交 `local_data/` 产物。
+- 详细计划见 `docs/yolo-obb-smoke-training-plan.md`。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`
@@ -731,6 +739,7 @@ ISAT smoke 全量转换与校验结果：
 - `docs/isat-annotation-tool-research-plan.md`
 - `docs/2026-06-26-isat-annotation-tool-research.md`
 - `docs/isat-obb-annotation-workflow.md`
+- `docs/yolo-obb-smoke-training-plan.md`
 - `rules/human-review-interface.md`
 - `references/annotation-tool-selection/README.md`
 - `docs/2026-06-25-obb-annotation-tool-selection.md`

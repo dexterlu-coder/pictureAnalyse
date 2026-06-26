@@ -907,6 +907,16 @@ YOLO/OBB smoke overlay 人工复查结果：
 - 已更新 `local_data/review_inbox/current/README.md`，当前任务切换为 overlay 复查。
 - 当前仍不得进入 YOLO/OBB 训练，必须等待用户复查 40 张 overlay。
 
+第二轮 overlay 人工复查结果：
+
+- 用户已完成 `local_data/review_inbox/current/overlay_review/review_form.csv`。
+- 复查记录总数：40。
+- `红框是否正确=正确`：40。
+- `红框是否正确=错误`：0。
+- 第二轮 40 张 overlay 质量门通过。
+- 下一步必须先归档当前固定审核入口，再规划 YOLO/OBB 训练前最终数据集构建。
+- 仍不得直接启动训练；训练前需要明确数据集构建策略、训练/验证划分和回滚点。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

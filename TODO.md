@@ -153,7 +153,10 @@
 - [x] 转换第二轮 ISAT JSON 为 YOLO/OBB 标签。
 - [x] 校验第二轮 YOLO/OBB 标签和图片。
 - [x] 生成第二轮 overlay 复查入口。
-- [ ] 用户复查第二轮 40 张 overlay。
+- [x] 用户复查第二轮 40 张 overlay。
+- [ ] 归档第二轮 overlay 复查材料。
+- [ ] 重置固定审核入口为无待审核任务。
+- [ ] 规划 YOLO/OBB 训练前最终数据集构建。
 - [ ] 决定是否安装 Ultralytics 并启动 YOLO/OBB 冒烟训练。
 - [ ] 设计 OCR 小实验。
 - [ ] 设计云端 VLM 兜底小实验。

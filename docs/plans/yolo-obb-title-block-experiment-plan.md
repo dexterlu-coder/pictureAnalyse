@@ -149,7 +149,7 @@ class_index x1 y1 x2 y2 x3 y3 x4 y4
 - `postprocess_error`
 - `data_leakage`
 
-详细调研见 `docs/2026-06-25-yolo-obb-debugging-research.md`。
+详细调研见 `docs/research/2026-06-25-yolo-obb-debugging-research.md`。
 
 ## 验收标准
 
@@ -190,3 +190,4 @@ VLM 暂时不抢主线。它进入流程的条件是：
 ## 回滚点
 
 本计划、RPD 和 TODO 提交后作为回滚点。后续若 YOLO/OBB 实验不可用，可回到该提交，保留 OpenCV 基线与当前文档路线。
+

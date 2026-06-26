@@ -22,7 +22,7 @@
 相关资料调研见：
 
 - `references/drawing-rotation-research/README.md`
-- `docs/2026-06-23-engineering-drawing-orientation-research.md`
+- `docs/research/2026-06-23-engineering-drawing-orientation-research.md`
 
 调研后的关键修正：
 
@@ -142,3 +142,4 @@
 ## 审核点
 
 实现前需要用户审核本规划。
+

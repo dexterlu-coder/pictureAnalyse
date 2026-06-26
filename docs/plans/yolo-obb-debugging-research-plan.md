@@ -42,8 +42,8 @@
 ## 输出
 
 - 更新 `references/ocr-vlm-workflow-research/README.md` 或新增 YOLO 调试索引。
-- 新增调研笔记：`docs/2026-06-25-yolo-obb-debugging-research.md`。
-- 更新 `docs/yolo-obb-title-block-experiment-plan.md`，加入调试协议。
+- 新增调研笔记：`docs/research/2026-06-25-yolo-obb-debugging-research.md`。
+- 更新 `docs/plans/yolo-obb-title-block-experiment-plan.md`，加入调试协议。
 - 更新 RPD 和 TODO。
 
 ## 通过标准
@@ -52,3 +52,4 @@
 - 明确训练前的冒烟流程。
 - 明确训练后看哪些产物。
 - 明确失败时如何判断是数据、标注、模型还是后处理问题。
+

@@ -134,7 +134,7 @@
 - 输出更详细的证据字段，方便判断低置信度原因。
 - 调试图应标注局部候选框，而不是只标注整条边带。
 
-详细规划见 `docs/confidence-improvement-plan.md`。
+详细规划见 `docs/plans/confidence-improvement-plan.md`。
 
 ## 实验样本扩展需求
 
@@ -182,7 +182,7 @@
 - 找出分歧样本，定位 OpenCV 或 MCP 的误判模式。
 - 为后续置信度阈值校准提供数据基础。
 
-详细计划见 `docs/three-way-rotation-comparison-plan.md`。
+详细计划见 `docs/plans/three-way-rotation-comparison-plan.md`。
 
 完成状态：已完成全量 63 张三方比对。
 
@@ -220,7 +220,7 @@
 - 以 `sample_009`、`sample_010`、`sample_042` 作为重点回归样本。
 - 全量 63 张运行后，不应新增相对当前三方候选真值的 OpenCV 分歧。
 
-详细计划见 `docs/opencv-stage2-error-fix-plan.md`。
+详细计划见 `docs/plans/opencv-stage2-error-fix-plan.md`。
 
 完成状态：已完成 OpenCV 阶段二误判修复。
 
@@ -258,7 +258,7 @@
 - 实现自动评估脚本，计算准确率、错误样本、复核样本和置信度摘要。
 - 后续每次修改识别算法后，都应先跑评估脚本再判断是否变好。
 
-详细计划见 `docs/ground-truth-evaluation-plan.md`。
+详细计划见 `docs/plans/ground-truth-evaluation-plan.md`。
 
 完成状态：已完成候选 ground truth 生成和自动评估脚本。
 
@@ -297,7 +297,7 @@
 - 按需要复核、未人工确认、低置信度排序，优先暴露风险样本。
 - 不直接修改 ground truth，避免把未完成复核的状态误写为人工确认。
 
-详细计划见 `docs/manual-review-pack-plan.md`。
+详细计划见 `docs/plans/manual-review-pack-plan.md`。
 
 完成状态：已完成人工精审辅助包生成脚本和本地输出。
 
@@ -408,7 +408,7 @@
 - 对增强样本独立运行 OpenCV 检测和评估。
 - 后续算法优化必须同时参考原始人工确认集和增强 90 度集。
 
-详细计划见 `docs/augmented-90-sample-plan.md`。
+详细计划见 `docs/plans/augmented-90-sample-plan.md`。
 
 完成状态：已完成。
 
@@ -472,7 +472,7 @@
 - 汇总输出两套数据和合计指标。
 - 当前联合评估应达到 83/83。
 
-详细计划见 `docs/combined-evaluation-plan.md`。
+详细计划见 `docs/plans/combined-evaluation-plan.md`。
 
 完成状态：已完成。
 
@@ -516,7 +516,7 @@
 - 优化后必须运行联合评估，保证 83/83 不变。
 - 目标是提高这两个已确认正确样本的置信度，最好不再触发复核。
 
-详细计划见 `docs/low-confidence-042-plan.md`。
+详细计划见 `docs/plans/low-confidence-042-plan.md`。
 
 完成状态：已完成。
 
@@ -587,7 +587,7 @@ YOLO/OBB 标注准备包执行结果：
 - 建议拆分：`train` 57，`val` 14，`test_focus` 12。
 - 标题栏粗位置分布：`right` 32，`top` 30，`left` 20，`bottom` 1。
 - 该准备包只生成清单和标注说明，不复制图纸、不上传图纸、不训练模型。
-- 用户已审核并同意 `docs/yolo-obb-title-block-experiment-plan.md` 中的标注规范，允许进入 12 到 20 张 OBB 冒烟标注准备。
+- 用户已审核并同意 `docs/plans/yolo-obb-title-block-experiment-plan.md` 中的标注规范，允许进入 12 到 20 张 OBB 冒烟标注准备。
 
 YOLO/OBB 冒烟标注子集执行结果：
 
@@ -604,7 +604,7 @@ YOLO/OBB 调试方案前置调研需求：
 - 在开始真实 OBB 标注和训练前，需要先调研 YOLO/OBB 类似工程的调试方案。
 - 调研重点包括数据集检查、标注可视化、小样本过拟合、训练指标、推理可视化、错误分层和后处理验证。
 - 本轮不安装训练依赖、不启动训练、不绘制真实 OBB 标签。
-- 详细计划见 `docs/yolo-obb-debugging-research-plan.md`。
+- 详细计划见 `docs/plans/yolo-obb-debugging-research-plan.md`。
 
 YOLO/OBB 调试方案他山调研结论：
 
@@ -614,7 +614,7 @@ YOLO/OBB 调试方案他山调研结论：
 - 训练后不能只看 mAP，还要看召回、定位质量、val labels/pred 对照图和后处理映射结果。
 - 错误样本要分层为 `label_error`、`format_error`、`false_negative`、`false_positive`、`localization_error`、`postprocess_error`、`data_leakage`。
 - 标注 16 张前，下一步应先实现 YOLO/OBB 标签可视化脚本和数据集校验脚本。
-- 详细调研见 `references/yolo-obb-debugging-research/README.md` 和 `docs/2026-06-25-yolo-obb-debugging-research.md`。
+- 详细调研见 `references/yolo-obb-debugging-research/README.md` 和 `docs/research/2026-06-25-yolo-obb-debugging-research.md`。
 
 YOLO/OBB 标签工具实现计划：
 
@@ -623,7 +623,7 @@ YOLO/OBB 标签工具实现计划：
 - 默认输入为 `local_data/yolo_obb_annotation_pack/smoke/smoke_manifest.csv`。
 - 默认标签目录为 `local_data/yolo_obb_annotation_pack/smoke/labels/`。
 - 当前尚未人工标注，因此允许校验报告中出现 16 个缺失标签。
-- 详细计划见 `docs/yolo-obb-label-tools-plan.md`。
+- 详细计划见 `docs/plans/yolo-obb-label-tools-plan.md`。
 
 YOLO/OBB 标签工具实现结果：
 
@@ -641,7 +641,7 @@ OBB 标注工具选择与人工界面规则需求：
 - 标注工具选择前不开始真实标注，不训练 YOLO/OBB，不上传图纸。
 - 用户新增长期规则：需要人工填写的内容必须去掉不必要信息；所有图像排列必须优先考虑人工查看是否方便。
 - 该规则需要写入 `rules/human-review-interface.md`。
-- 详细计划见 `docs/annotation-tool-selection-plan.md`。
+- 详细计划见 `docs/plans/annotation-tool-selection-plan.md`。
 
 OBB 标注工具选择结果：
 
@@ -649,8 +649,8 @@ OBB 标注工具选择结果：
 - 选择理由：本地运行、支持 polygon、安装使用轻，适合 16 张冒烟样本；Labelme JSON 易转换为 Ultralytics OBB。
 - CVAT 功能更强，但 Docker/Web 平台成本较高，更适合后续多人或大批量标注。
 - 新增规则文件：`rules/human-review-interface.md`。
-- 新增操作说明：`docs/labelme-obb-annotation-workflow.md`。
-- 新增调研记录：`docs/2026-06-25-obb-annotation-tool-selection.md`。
+- 新增操作说明：`docs/workflows/labelme-obb-annotation-workflow.md`。
+- 新增调研记录：`docs/research/2026-06-25-obb-annotation-tool-selection.md`。
 - 新增调研索引：`references/annotation-tool-selection/README.md`。
 - 新增转换脚本：`scripts/convert_labelme_to_yolo_obb.py`。
 - `scripts/build_yolo_obb_annotation_pack.py` 的 smoke 查看页生成逻辑已按人工界面规则调整：减少展示字段、放大图像显示区域，方便查看标题栏。
@@ -663,7 +663,7 @@ ISAT 标注工具调研需求：
 - 用户反馈有评论认为 ISAT 比 Labelme 更好用，需要在开始人工标注前重新调研。
 - 本轮只比较工具能力、安装复杂度、导出/转换链路和当前 16 张冒烟样本适配度。
 - 本轮不安装 ISAT、不开始标注、不训练 YOLO/OBB、不删除 Labelme 方案。
-- 详细计划见 `docs/isat-annotation-tool-research-plan.md`。
+- 详细计划见 `docs/plans/isat-annotation-tool-research-plan.md`。
 
 ISAT 标注工具调研结论：
 
@@ -673,8 +673,8 @@ ISAT 标注工具调研结论：
 - ISAT 支持 ISAT/COCO/YOLO/LABELME/VOC 等格式转换，但其 YOLO 转换不应直接假设为 Ultralytics OBB。
 - 对本项目最稳妥的链路是：ISAT 标注 polygon -> 导出/转换 Labelme JSON -> 使用现有 `convert_labelme_to_yolo_obb.py` 转为 YOLO OBB。
 - 下一步不应一次性标完 16 张，而是先用 ISAT 标注 1 张样本，验证导出/转换/校验/overlay 链路。
-- 新增记录：`docs/2026-06-26-isat-annotation-tool-research.md`。
-- 新增操作说明：`docs/isat-obb-annotation-workflow.md`。
+- 新增记录：`docs/research/2026-06-26-isat-annotation-tool-research.md`。
+- 新增操作说明：`docs/workflows/isat-obb-annotation-workflow.md`。
 
 ISAT 单样本标注检查结果：
 
@@ -722,7 +722,7 @@ YOLO/OBB 冒烟训练准备需求：
 - 当前环境未安装 Ultralytics，因此先构建本地 Ultralytics OBB 数据集结构，不直接训练。
 - 冒烟训练准备采用过拟合链路验证策略：`train=16`、`val=16`，该设置只用于验证数据加载和训练链路，不用于泛化评估。
 - 本轮不安装 Ultralytics、不下载权重、不启动训练、不提交 `local_data/` 产物。
-- 详细计划见 `docs/yolo-obb-smoke-training-plan.md`。
+- 详细计划见 `docs/plans/yolo-obb-smoke-training-plan.md`。
 
 YOLO/OBB smoke 数据集构建结果：
 
@@ -987,26 +987,50 @@ YOLO/OBB 训练前最终数据集构建需求：
 - 更新根目录 README，使用户能从入口文档找到当前项目结构和关键文件。
 - 不移动 `local_data/`、`outputs/` 等本地私有或可再生产物。
 
+完成状态：已完成。
+
+整理结果：
+
+- 新增 `docs/README.md` 作为公开文档总索引。
+- 新增 `docs/research/`，存放调研笔记和横向学习结论。
+- 新增 `docs/plans/`，存放阶段计划、实验计划和实现前规划。
+- 新增 `docs/workflows/`，存放人工操作流程和工具使用说明。
+- 新增 `docs/research/2026-06-26-yolo-obb-training-basis.md`，记录 YOLO/OBB 训练规划依据。
+- 新增 `references/README.md`，索引外部资料样本。
+- 新增 `rules/README.md`，索引长期规则。
+- 新增 `reports/README.md`，索引 RPD 和阶段结果汇总。
+- 更新根目录 `README.md`，加入当前文档入口、当前重点和本地私有目录约定。
+- 已修正 RPD 与计划文档中的旧 `docs/*.md` 引用，避免移动后链接失效。
+
+新的文档分层约定：
+
+- 调研成果放入 `docs/research/`。
+- 阶段规划放入 `docs/plans/`。
+- 人工流程放入 `docs/workflows/`。
+- 外部样本索引放入 `references/`。
+- 长期项目规则放入 `rules/`。
+- 需求、验收和阶段结果汇总放入 `reports/`。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`
-- `docs/2026-06-25-ocr-vlm-workflow-research.md`
-- `docs/ocr-vlm-fallback-workflow-plan.md`
-- `docs/2026-06-25-local-title-block-detector-and-vlm-research.md`
-- `docs/yolo-obb-title-block-experiment-plan.md`
-- `docs/yolo-obb-debugging-research-plan.md`
+- `docs/research/2026-06-25-ocr-vlm-workflow-research.md`
+- `docs/plans/ocr-vlm-fallback-workflow-plan.md`
+- `docs/research/2026-06-25-local-title-block-detector-and-vlm-research.md`
+- `docs/plans/yolo-obb-title-block-experiment-plan.md`
+- `docs/plans/yolo-obb-debugging-research-plan.md`
 - `references/yolo-obb-debugging-research/README.md`
-- `docs/2026-06-25-yolo-obb-debugging-research.md`
-- `docs/yolo-obb-label-tools-plan.md`
-- `docs/annotation-tool-selection-plan.md`
-- `docs/isat-annotation-tool-research-plan.md`
-- `docs/2026-06-26-isat-annotation-tool-research.md`
-- `docs/isat-obb-annotation-workflow.md`
-- `docs/yolo-obb-smoke-training-plan.md`
+- `docs/research/2026-06-25-yolo-obb-debugging-research.md`
+- `docs/plans/yolo-obb-label-tools-plan.md`
+- `docs/plans/annotation-tool-selection-plan.md`
+- `docs/plans/isat-annotation-tool-research-plan.md`
+- `docs/research/2026-06-26-isat-annotation-tool-research.md`
+- `docs/workflows/isat-obb-annotation-workflow.md`
+- `docs/plans/yolo-obb-smoke-training-plan.md`
 - `rules/human-review-interface.md`
 - `references/annotation-tool-selection/README.md`
-- `docs/2026-06-25-obb-annotation-tool-selection.md`
-- `docs/labelme-obb-annotation-workflow.md`
+- `docs/research/2026-06-25-obb-annotation-tool-selection.md`
+- `docs/workflows/labelme-obb-annotation-workflow.md`
 
 ## 项目目录整理需求
 
@@ -1017,7 +1041,7 @@ YOLO/OBB 训练前最终数据集构建需求：
 - 保留公开仓库的源码、规划、规则、RPD、参考资料。
 - 保留本地私有原 PDF 和前 20 张实验样本。
 - 删除可再生输出、旧临时目录、重复的前 5 张样本和无关草稿。
-- 具体计划见 `docs/project-structure-cleanup-plan.md`。
+- 具体计划见 `docs/plans/project-structure-cleanup-plan.md`。
 
 ## 风险
 
@@ -1028,3 +1052,4 @@ YOLO/OBB 训练前最终数据集构建需求：
 ## 回滚准备
 
 实现前必须提交当前规划、RPD 和 todo。若后续实现不可用，可回退到该提交，保留已确认的需求和计划。
+

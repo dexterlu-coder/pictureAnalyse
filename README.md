@@ -2,17 +2,22 @@
 
 机械图纸扫描件处理实验项目。
 
-当前重点是识别扫描版机械图纸的页面旋转方向。判断依据是：符合机械制图规范的图纸，其标题栏在正确方向下应位于页面下方或右下方。
+目标是识别扫描版机械图纸的页面旋转方向，并逐步形成可复核、可解释、可回滚的标题栏检测工作流。判断依据是：符合机械制图规范的图纸，其标题栏在正确方向下应位于页面下方或右下方。
 
-## 当前内容
+## 文档入口
 
-- `rules/mechanical-drawing-rotation.md`：机械图纸旋转角度判断规则。
-- `docs/rotation-detection-plan.md`：旋转方向识别技术路线和阶段规划。
-- `docs/project-structure-cleanup-plan.md`：项目目录整理方案。
-- `reports/rpd-rotation-detection.md`：需求与产品定义文档。
-- `TODO.md`：当前任务清单。
-- `AGENTS.md`：项目协作流程规则。
-- `scripts/detect_rotation_stage1.py`：阶段一 OpenCV 方向识别原型。
+- [项目协作规则](AGENTS.md)
+- [TODO](TODO.md)
+- [文档索引](docs/README.md)
+- [参考资料索引](references/README.md)
+- [规则索引](rules/README.md)
+- [报告索引](reports/README.md)
+
+## 当前重点
+
+已完成 OpenCV 方向识别基线、全量人工确认 ground truth、顺时针 90 度增强样本、YOLO/OBB 标题栏标注、40 张 OBB overlay 人工复查，以及第二轮 YOLO/OBB 分组数据集构建。
+
+当前下一步是决定是否安装 Ultralytics 并启动小样本 YOLO/OBB 标题栏 detector 训练。训练结果只用于链路验证和证据分支探索，不直接宣称工业级泛化能力。
 
 ## 数据与隐私
 
@@ -27,21 +32,8 @@
 - `local_data/experiment_samples/all/png/`：全量 PNG 实验样本。
 - `local_data/experiment_samples/first20/pdf/`：前 20 张单页 PDF 实验样本。
 - `local_data/experiment_samples/first20/png/`：前 20 张 PNG 实验样本。
-
-## 当前阶段
-
-已完成：
-
-- 前 5 张样例图纸的人工方向判断。
-- 全量 63 张图纸的本地实验样本抽取和渲染。
-- 判断规则沉淀。
-- OpenCV + OCR + 视觉 MCP 混合路线规划。
-- public 仓库发布前的数据隔离整理。
-
-下一步：
-
-- 复核阶段一调试图和低置信度样本。
-- 评估是否进入 OCR 辅助确认阶段。
+- `local_data/review_inbox/current/`：固定人工审核入口。
+- `local_data/yolo_obb_dataset_round2/`：第二轮人工确认 YOLO/OBB 本地训练数据集。
 
 ## 阶段一运行方式
 

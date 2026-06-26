@@ -826,6 +826,13 @@ YOLO/OBB smoke overlay 人工复查结果：
 - 固定入口中新增 `README.md`，说明当前应打开的文件。
 - 旧业务目录中的第二轮文件作为历史产物保留；后续用户审核完成后，再由执行者归档当前审核文件。
 
+固定入口发布结果：
+
+- 已生成 `local_data/review_inbox/current/README.md`。
+- 已生成 `local_data/review_inbox/current/review_index.html`。
+- 已生成 `local_data/review_inbox/current/reference_form.csv`。
+- 当前用户只需要进入 `local_data/review_inbox/current/`，不需要再到其他目录寻找审核材料。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

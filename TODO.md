@@ -141,8 +141,8 @@
 - [x] 人工复查 16 张 smoke overlay。
 - [x] 记录 smoke overlay 复查结果，暂缓 YOLO/OBB 训练。
 - [x] 生成第二轮 90 度补强与难例参考标注包。
-- [ ] 将固定审核入口规则写入 AGENTS.md。
-- [ ] 将当前第二轮待审核内容发布到固定入口 `local_data/review_inbox/current/`。
+- [x] 将固定审核入口规则写入 AGENTS.md。
+- [x] 将当前第二轮待审核内容发布到固定入口 `local_data/review_inbox/current/`。
 - [ ] 用户标注/补充第二轮 90 度补强与难例参考样本。
 - [ ] 决定是否安装 Ultralytics 并启动 YOLO/OBB 冒烟训练。
 - [ ] 设计 OCR 小实验。

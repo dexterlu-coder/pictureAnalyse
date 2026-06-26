@@ -745,6 +745,17 @@ YOLO/OBB smoke 数据集构建结果：
 - 后续 OCR、VLM、YOLO 训练、PDF 校正等流程均不得绕过质量门。
 - 规则已写入 `rules/human-review-interface.md`。
 
+YOLO/OBB overlay 人工复查页面结果：
+
+- 新增脚本：`scripts/build_obb_overlay_review_page.py`。
+- 已运行 `python -m py_compile scripts\build_obb_overlay_review_page.py`，通过。
+- 已运行 `python scripts\build_obb_overlay_review_page.py`，生成本地复查包。
+- 本地输出：`local_data/yolo_obb_annotation_pack/smoke/overlay_review/review_index.html`。
+- 人工填写表：`local_data/yolo_obb_annotation_pack/smoke/overlay_review/review_form.csv`。
+- 复查样本数：16。
+- `review_form.csv` 只保留 `序号`、`样本编号`、`标题栏位置`、`旋转角度`、`人工判断`、`备注`，符合人工界面简化规则。
+- 当前还未进行人工复查，不得进入 YOLO/OBB 训练。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

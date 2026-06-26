@@ -676,6 +676,15 @@ ISAT 标注工具调研结论：
 - 新增记录：`docs/2026-06-26-isat-annotation-tool-research.md`。
 - 新增操作说明：`docs/isat-obb-annotation-workflow.md`。
 
+ISAT 单样本标注检查结果：
+
+- 用户已用 ISAT 标注 `sample_009`。
+- 本地 JSON：`local_data/yolo_obb_annotation_pack/smoke/labelme_json/YKJ125-00-00-2525_sample_009.json`。
+- JSON 实际为 ISAT 结构，包含 `info` 和 `objects`，不是 Labelme `shapes` 结构。
+- 文件中存在一个 `title_block` 对象，segmentation 为 4 点 polygon，适合转换为 YOLO/OBB。
+- 文件中同时存在 `__background__` 对象，转换时应忽略。
+- 下一步需要扩展 `scripts/convert_labelme_to_yolo_obb.py`，兼容 ISAT JSON 和带原始文件名前缀的 JSON 文件名。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

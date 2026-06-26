@@ -48,13 +48,23 @@ def read_user_flagged_samples(path: Path) -> dict[str, str]:
         return {}
 
     flagged: dict[str, str] = {}
-    with path.open("r", encoding="utf-8-sig", newline="") as f:
-        for row in csv.DictReader(f):
-            sample = (row.get("样本编号") or "").strip()
-            verdict = (row.get("红框是否正确") or "").strip()
-            note = (row.get("备注") or "").strip()
-            if sample and verdict and verdict != "正确":
-                flagged[sample] = note or "用户复查标记为需要重新确认"
+    last_error: UnicodeDecodeError | None = None
+    for encoding in ("utf-8-sig", "gb18030"):
+        try:
+            with path.open("r", encoding=encoding, newline="") as f:
+                for row in csv.DictReader(f):
+                    sample = (row.get("样本编号") or "").strip()
+                    verdict = (row.get("红框是否正确") or "").strip()
+                    note = (row.get("备注") or "").strip()
+                    if sample and verdict and verdict != "正确":
+                        flagged[sample] = note or "用户复查标记为需要重新确认"
+            return flagged
+        except UnicodeDecodeError as exc:
+            last_error = exc
+            flagged.clear()
+
+    if last_error:
+        raise last_error
     return flagged
 
 

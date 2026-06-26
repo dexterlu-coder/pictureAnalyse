@@ -658,6 +658,13 @@ OBB 标注工具选择结果：
 - `python -m py_compile scripts\convert_labelme_to_yolo_obb.py` 通过。
 - `python scripts\convert_labelme_to_yolo_obb.py --allow-missing` 已运行；当前尚未标注，因此结果为 `converted=0`、`missing_json=16`、`errors=0`，符合预期。
 
+ISAT 标注工具调研需求：
+
+- 用户反馈有评论认为 ISAT 比 Labelme 更好用，需要在开始人工标注前重新调研。
+- 本轮只比较工具能力、安装复杂度、导出/转换链路和当前 16 张冒烟样本适配度。
+- 本轮不安装 ISAT、不开始标注、不训练 YOLO/OBB、不删除 Labelme 方案。
+- 详细计划见 `docs/isat-annotation-tool-research-plan.md`。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`
@@ -670,6 +677,7 @@ OBB 标注工具选择结果：
 - `docs/2026-06-25-yolo-obb-debugging-research.md`
 - `docs/yolo-obb-label-tools-plan.md`
 - `docs/annotation-tool-selection-plan.md`
+- `docs/isat-annotation-tool-research-plan.md`
 - `rules/human-review-interface.md`
 - `references/annotation-tool-selection/README.md`
 - `docs/2026-06-25-obb-annotation-tool-selection.md`

@@ -19,7 +19,7 @@ def rel_path(target: Path, base: Path) -> str:
 
 
 def write_review_csv(path: Path, records: list[dict]) -> None:
-    fieldnames = ["序号", "样本编号", "标题栏位置", "旋转角度", "人工判断", "备注"]
+    fieldnames = ["序号", "样本编号", "红框是否正确", "备注"]
     with path.open("w", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
@@ -28,9 +28,7 @@ def write_review_csv(path: Path, records: list[dict]) -> None:
                 {
                     "序号": index,
                     "样本编号": record["sample"],
-                    "标题栏位置": record["position"],
-                    "旋转角度": record["rotation_degrees"],
-                    "人工判断": "",
+                    "红框是否正确": "",
                     "备注": "",
                 }
             )
@@ -45,8 +43,7 @@ def write_html(path: Path, records: list[dict]) -> None:
       <section class="sheet">
         <div class="meta">
           <strong>{index}. {html.escape(record["sample"])}</strong>
-          <span>{html.escape(record["position"])}</span>
-          <span>{record["rotation_degrees"]}°</span>
+          <a href="{image_src}" target="_blank" rel="noreferrer">打开大图</a>
         </div>
         <img src="{image_src}" alt="{html.escape(record["sample"])}" />
       </section>"""
@@ -69,7 +66,7 @@ def write_html(path: Path, records: list[dict]) -> None:
       position: sticky;
       top: 0;
       z-index: 2;
-      padding: 14px 20px;
+      padding: 12px 18px;
       background: #fff;
       border-bottom: 1px solid #d8dde3;
     }}
@@ -81,13 +78,13 @@ def write_html(path: Path, records: list[dict]) -> None:
     .hint {{
       margin-top: 4px;
       color: #5f6368;
-      font-size: 13px;
+      font-size: 14px;
     }}
     main {{
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(760px, 1fr));
-      gap: 16px;
-      padding: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(680px, 1fr));
+      gap: 14px;
+      padding: 14px;
     }}
     .sheet {{
       background: #fff;
@@ -100,14 +97,20 @@ def write_html(path: Path, records: list[dict]) -> None:
       flex-wrap: wrap;
       gap: 12px;
       align-items: center;
+      justify-content: space-between;
       padding: 10px 12px;
       border-bottom: 1px solid #edf0f2;
       font-size: 14px;
     }}
+    .meta a {{
+      color: #1a73e8;
+      text-decoration: none;
+    }}
     img {{
       display: block;
       width: 100%;
-      height: 860px;
+      height: min(82vh, 920px);
+      min-height: 620px;
       object-fit: contain;
       background: #fafafa;
     }}
@@ -116,7 +119,7 @@ def write_html(path: Path, records: list[dict]) -> None:
 <body>
   <header>
     <h1>YOLO/OBB 标题栏 overlay 复查</h1>
-    <div class="hint">只检查红框是否准确框住标题栏主体。若有问题，在 review_form.csv 中标记。</div>
+    <div class="hint">只检查红框是否准确框住标题栏主体；结果填写到 review_form.csv。</div>
   </header>
   <main>
     {"".join(cards)}

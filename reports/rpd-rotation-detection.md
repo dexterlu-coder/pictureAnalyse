@@ -771,6 +771,16 @@ YOLO/OBB overlay 人工复查文件重写要求：
 - 标题栏位置和旋转角度等信息已存在于 manifest、ground truth 或机器报告中，不应进入本轮人工填写文件。
 - 重写后仍不得进入 YOLO/OBB 训练，必须等待用户完成 16 张 overlay 人工复查。
 
+完成状态：已完成。
+
+重写结果：
+
+- 已更新 `scripts/build_obb_overlay_review_page.py`。
+- 已重新生成 `local_data/yolo_obb_annotation_pack/smoke/overlay_review/review_index.html`。
+- 已重新生成 `local_data/yolo_obb_annotation_pack/smoke/overlay_review/review_form.csv`。
+- `review_form.csv` 当前只包含 `序号`、`样本编号`、`红框是否正确`、`备注`。
+- `review_index.html` 当前只展示样本编号、打开大图入口和 overlay 图片，不再展示标题栏位置或旋转角度。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

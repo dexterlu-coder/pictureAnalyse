@@ -137,7 +137,7 @@
 - [x] 写入工业级稳定可靠优先规则。
 - [x] 生成 16 张 smoke overlay 人工复查页面。
 - [x] 将稳定可靠、人工表格简化和审核 HTML 易审规则同步写入 AGENTS.md。
-- [ ] 重写 smoke overlay 人工复查 HTML 和 CSV，只保留本轮审核必要信息。
+- [x] 重写 smoke overlay 人工复查 HTML 和 CSV，只保留本轮审核必要信息。
 - [ ] 人工复查 16 张 smoke overlay。
 - [ ] 决定是否安装 Ultralytics 并启动 YOLO/OBB 冒烟训练。
 - [ ] 设计 OCR 小实验。

@@ -833,6 +833,14 @@ YOLO/OBB smoke overlay 人工复查结果：
 - 已生成 `local_data/review_inbox/current/reference_form.csv`。
 - 当前用户只需要进入 `local_data/review_inbox/current/`，不需要再到其他目录寻找审核材料。
 
+固定入口规则修正：
+
+- 仅把 HTML/CSV 放进固定入口是不充分的。
+- 对 ISAT 标注任务，用户实际需要打开的 PNG 图片也是当前审核/标注文件，必须复制到固定入口。
+- 第二轮固定入口必须新增 `to_label/`，放全部待标注图片副本。
+- 第二轮固定入口必须新增 `references/`，放参考图片副本。
+- `review_index.html` 必须引用固定入口内的图片副本，不得引用其他业务目录中的原图。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

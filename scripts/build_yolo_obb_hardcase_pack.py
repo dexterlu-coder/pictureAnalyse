@@ -5,6 +5,7 @@ import csv
 import html
 import json
 import os
+import shutil
 from pathlib import Path
 
 
@@ -111,6 +112,14 @@ def rel_path(target: Path, base: Path) -> str:
     return Path(os.path.relpath(target, base)).as_posix()
 
 
+def inbox_image_name(record: dict) -> str:
+    return f"{record['sample']}{Path(record['image_path']).suffix.lower()}"
+
+
+def reference_image_name(record: dict) -> str:
+    return f"{record['source_sample']}_reference{Path(record['reference_image_path']).suffix.lower()}"
+
+
 def build_records() -> list[dict]:
     originals = original_records()
     flagged = read_user_flagged_samples(SMOKE_REVIEW_FORM)
@@ -142,6 +151,8 @@ def write_manifest_csv(path: Path, records: list[dict]) -> None:
         "source_sample",
         "image_path",
         "reference_image_path",
+        "source_image_path",
+        "source_reference_image_path",
         "title_block_position",
         "precise_title_block_position",
         "rotation_degrees",
@@ -152,11 +163,28 @@ def write_manifest_csv(path: Path, records: list[dict]) -> None:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for record in records:
-            row = dict(record)
-            row["image_path"] = str(record["image_path"].relative_to(ROOT))
-            if record["reference_image_path"]:
-                row["reference_image_path"] = str(Path(record["reference_image_path"]).relative_to(ROOT))
-            row["label_class"] = "title_block"
+            row = {
+                "dataset": record["dataset"],
+                "sample": record["sample"],
+                "source_sample": record["source_sample"],
+                "image_path": str(record["inbox_image_path"].relative_to(ROOT)),
+                "reference_image_path": (
+                    str(record["inbox_reference_image_path"].relative_to(ROOT))
+                    if record["inbox_reference_image_path"]
+                    else ""
+                ),
+                "source_image_path": str(record["image_path"].relative_to(ROOT)),
+                "source_reference_image_path": (
+                    str(Path(record["reference_image_path"]).relative_to(ROOT))
+                    if record["reference_image_path"]
+                    else ""
+                ),
+                "title_block_position": record["title_block_position"],
+                "precise_title_block_position": record["precise_title_block_position"],
+                "rotation_degrees": record["rotation_degrees"],
+                "reason": record["reason"],
+                "label_class": "title_block",
+            }
             writer.writerow(row)
 
 
@@ -178,13 +206,36 @@ def write_reference_form(path: Path, records: list[dict]) -> None:
             )
 
 
+def publish_images(output_dir: Path, records: list[dict]) -> list[dict]:
+    to_label_dir = output_dir / "to_label"
+    references_dir = output_dir / "references"
+    to_label_dir.mkdir(parents=True, exist_ok=True)
+    references_dir.mkdir(parents=True, exist_ok=True)
+
+    published: list[dict] = []
+    for record in records:
+        row = dict(record)
+        label_dst = to_label_dir / inbox_image_name(record)
+        shutil.copy2(record["image_path"], label_dst)
+        row["inbox_image_path"] = label_dst
+
+        if record["reference_image_path"]:
+            reference_dst = references_dir / reference_image_name(record)
+            shutil.copy2(record["reference_image_path"], reference_dst)
+            row["inbox_reference_image_path"] = reference_dst
+        else:
+            row["inbox_reference_image_path"] = ""
+        published.append(row)
+    return published
+
+
 def write_html(path: Path, records: list[dict]) -> None:
     cards = []
     for index, record in enumerate(records, start=1):
-        image_src = html.escape(rel_path(record["image_path"], path.parent))
+        image_src = html.escape(rel_path(record["inbox_image_path"], path.parent))
         reference = ""
-        if record["reference_image_path"]:
-            reference_src = html.escape(rel_path(Path(record["reference_image_path"]), path.parent))
+        if record["inbox_reference_image_path"]:
+            reference_src = html.escape(rel_path(record["inbox_reference_image_path"], path.parent))
             reference = f"""
         <div class="reference">
           <div class="caption">原图参考</div>
@@ -326,22 +377,28 @@ def summarize(records: list[dict]) -> dict:
 def build(output_dir: Path) -> dict:
     records = build_records()
     output_dir.mkdir(parents=True, exist_ok=True)
+    published_records = publish_images(output_dir, records)
 
     manifest_records = []
-    for record in records:
+    for record in published_records:
         row = dict(record)
-        row["image_path"] = str(record["image_path"].relative_to(ROOT))
+        row["source_image_path"] = str(record["image_path"].relative_to(ROOT))
+        row["image_path"] = str(record["inbox_image_path"].relative_to(ROOT))
         if record["reference_image_path"]:
-            row["reference_image_path"] = str(Path(record["reference_image_path"]).relative_to(ROOT))
+            row["source_reference_image_path"] = str(Path(record["reference_image_path"]).relative_to(ROOT))
+        if record["inbox_reference_image_path"]:
+            row["reference_image_path"] = str(record["inbox_reference_image_path"].relative_to(ROOT))
+        row.pop("inbox_image_path", None)
+        row.pop("inbox_reference_image_path", None)
         manifest_records.append(row)
 
-    write_manifest_csv(output_dir / "round2_manifest.csv", records)
+    write_manifest_csv(output_dir / "round2_manifest.csv", published_records)
     (output_dir / "round2_manifest.json").write_text(
         json.dumps(manifest_records, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-    write_reference_form(output_dir / "reference_form.csv", records)
-    write_html(output_dir / "review_index.html", records)
+    write_reference_form(output_dir / "reference_form.csv", published_records)
+    write_html(output_dir / "review_index.html", published_records)
     (output_dir / "README.md").write_text(
         """# 当前待审核内容
 
@@ -350,6 +407,8 @@ def build(output_dir: Path) -> dict:
 本轮请使用：
 
 - `review_index.html`：查看需要标注/参考的图片。
+- `to_label/`：用 ISAT 打开并标注这里面的图片。
+- `references/`：需要对照时查看这里面的原图参考。
 - `reference_form.csv`：填写标注完成情况、标题栏边界参考、难点说明和备注。
 
 其他文件是机器清单或摘要，通常不需要打开。
@@ -360,6 +419,12 @@ def build(output_dir: Path) -> dict:
         """# 第二轮 90 度补强与难例参考标注
 
 请优先标注 `review_index.html` 中每个样本的“需要标注”图片。
+
+ISAT 标注图片统一放在：
+
+```text
+to_label/
+```
 
 要求：
 
@@ -378,6 +443,10 @@ def build(output_dir: Path) -> dict:
             "review_index": str(output_dir / "review_index.html"),
             "reference_form": str(output_dir / "reference_form.csv"),
             "manifest": str(output_dir / "round2_manifest.csv"),
+            "to_label_dir": str(output_dir / "to_label"),
+            "references_dir": str(output_dir / "references"),
+            "to_label_images": len(list((output_dir / "to_label").glob("*.png"))),
+            "reference_images": len(list((output_dir / "references").glob("*.png"))),
         }
     )
     (output_dir / "round2_summary.json").write_text(

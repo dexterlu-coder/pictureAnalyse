@@ -724,6 +724,19 @@ YOLO/OBB 冒烟训练准备需求：
 - 本轮不安装 Ultralytics、不下载权重、不启动训练、不提交 `local_data/` 产物。
 - 详细计划见 `docs/yolo-obb-smoke-training-plan.md`。
 
+YOLO/OBB smoke 数据集构建结果：
+
+- 新增脚本：`scripts/build_yolo_obb_smoke_dataset.py`。
+- 已运行 `python -m py_compile scripts\build_yolo_obb_smoke_dataset.py`，通过。
+- 已运行 `python scripts\build_yolo_obb_smoke_dataset.py`，生成本地数据集目录：`local_data/yolo_obb_dataset_smoke/`。
+- 生成文件包括：`images/train/`、`images/val/`、`labels/train/`、`labels/val/`、`data.yaml`、`dataset_summary.json`。
+- 数据集策略：`overfit_smoke_train_equals_val`。
+- train 图片/标签：16/16。
+- val 图片/标签：16/16。
+- 类别：`0: title_block`。
+- 已执行标签格式校验：所有 train/val 标签均为 1 行 9 字段，类别为 0，坐标在 `[0, 1]` 内，问题数为 0。
+- 当前未安装 Ultralytics，尚未启动训练；下一步需要用户确认是否安装训练依赖并运行 YOLO/OBB 冒烟训练。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

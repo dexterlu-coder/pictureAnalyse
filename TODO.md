@@ -132,8 +132,9 @@
 - [x] 扩展转换脚本读取图片目录中的 ISAT JSON。
 - [x] 转换 16 张 smoke 标注并运行校验/overlay。
 - [x] 规划 YOLO/OBB 冒烟训练数据集准备。
-- [ ] 构建本地 YOLO/OBB smoke 数据集结构。
-- [ ] 校验本地 YOLO/OBB smoke 数据集结构。
+- [x] 构建本地 YOLO/OBB smoke 数据集结构。
+- [x] 校验本地 YOLO/OBB smoke 数据集结构。
+- [ ] 决定是否安装 Ultralytics 并启动 YOLO/OBB 冒烟训练。
 - [ ] 设计 OCR 小实验。
 - [ ] 设计云端 VLM 兜底小实验。
 - [ ] 设计本地 VLM 梯度测试方案。

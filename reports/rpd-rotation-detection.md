@@ -936,6 +936,42 @@ YOLO/OBB 训练前最终数据集构建需求：
 - 构建后必须检查图片/标签数量、标签字段、坐标范围和 source_sample 跨 split 泄漏。
 - 该数据集用于训练链路和小样本验证，不应被表述为工业级泛化评估集。
 
+完成状态：已完成。
+
+新增脚本：
+
+- `scripts/build_yolo_obb_round2_dataset.py`
+
+构建结果：
+
+- 数据集目录：`local_data/yolo_obb_dataset_round2/`。
+- 数据来源：`local_data/review_inbox/archive/round2_overlay_review_20260626_approved/`。
+- 数据集策略：`round2_human_verified_grouped_by_source_sample`。
+- 样本总数：40。
+- train：26 张图片 / 26 个标签。
+- val：7 张图片 / 7 个标签。
+- test：7 张图片 / 7 个标签。
+- source_sample 跨 split 泄漏：0。
+- 数据来源分布：`augmented_90` 20，`augmented_90_unclear` 12，`original` 8。
+- 标题栏位置分布：`left` 32，`right` 4，`bottom` 1，`top` 3。
+- test 来源样本：`sample_001`、`sample_010`、`sample_042`。
+- val 来源样本：`sample_009`、`sample_020`、`sample_034`、`sample_040`。
+
+校验结果：
+
+- 已生成 `local_data/yolo_obb_dataset_round2/data.yaml`。
+- 已生成 `local_data/yolo_obb_dataset_round2/dataset_summary.json`。
+- 已生成 `local_data/yolo_obb_dataset_round2/dataset_validation.json`。
+- 图片/标签匹配问题：0。
+- 标签字段数问题：0。
+- 类别 ID 问题：0。
+- 坐标范围问题：0。
+
+说明：
+
+- 该数据集已达到训练链路启动前的数据质量门。
+- 由于样本量仍小，后续训练结果只能作为标题栏检测链路验证和小样本指标，不得直接宣称工业级泛化能力。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

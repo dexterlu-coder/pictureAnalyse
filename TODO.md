@@ -139,8 +139,8 @@
 - [x] 将稳定可靠、人工表格简化和审核 HTML 易审规则同步写入 AGENTS.md。
 - [x] 重写 smoke overlay 人工复查 HTML 和 CSV，只保留本轮审核必要信息。
 - [x] 人工复查 16 张 smoke overlay。
-- [ ] 记录 smoke overlay 复查结果，暂缓 YOLO/OBB 训练。
-- [ ] 生成第二轮 90 度补强与难例参考标注包。
+- [x] 记录 smoke overlay 复查结果，暂缓 YOLO/OBB 训练。
+- [x] 生成第二轮 90 度补强与难例参考标注包。
 - [ ] 用户标注/补充第二轮 90 度补强与难例参考样本。
 - [ ] 决定是否安装 Ultralytics 并启动 YOLO/OBB 冒烟训练。
 - [ ] 设计 OCR 小实验。

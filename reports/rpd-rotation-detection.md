@@ -798,6 +798,25 @@ YOLO/OBB smoke overlay 人工复查结果：
 - 人工填写文件允许提供“详细参考说明”字段，但仍不得暴露内部调试字段和冗余路径。
 - 该包用于补充人工参考和标注多样性，不直接替代训练集质量门。
 
+完成状态：已完成。
+
+新增脚本：
+
+- `scripts/build_yolo_obb_hardcase_pack.py`
+
+执行结果：
+
+- 已生成第二轮本地包：`local_data/yolo_obb_annotation_pack/hardcase_round2/`。
+- 样本总数：28。
+- 顺时针 90 度补强样本：20。
+- 原始难例/参考样本：8。
+- 标题栏位置分布：`left` 20，`right` 4，`bottom` 1，`top` 3。
+- 人工查看入口：`local_data/yolo_obb_annotation_pack/hardcase_round2/review_index.html`。
+- 人工填写入口：`local_data/yolo_obb_annotation_pack/hardcase_round2/reference_form.csv`。
+- `reference_form.csv` 只保留 `序号`、`样本编号`、`是否完成标注`、`标题栏边界参考`、`难点说明`、`备注`。
+- 机器清单另存为 `round2_manifest.csv` 和 `round2_manifest.json`，不作为人工填写入口。
+- 脚本已兼容用户表格软件保存后的 `utf-8-sig` 与 `gb18030` 编码。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

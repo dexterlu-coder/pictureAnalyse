@@ -685,6 +685,17 @@ ISAT 单样本标注检查结果：
 - 文件中同时存在 `__background__` 对象，转换时应忽略。
 - 下一步需要扩展 `scripts/convert_labelme_to_yolo_obb.py`，兼容 ISAT JSON 和带原始文件名前缀的 JSON 文件名。
 
+ISAT 单样本链路验证结果：
+
+- `scripts/convert_labelme_to_yolo_obb.py` 已扩展为兼容 Labelme `shapes` 与 ISAT `objects` 两种 JSON 结构。
+- 转换脚本已支持按 `*sample_009.json` 匹配带原始文件名前缀的 ISAT JSON。
+- `python scripts\convert_labelme_to_yolo_obb.py --allow-missing` 已运行，结果：`converted=1`、`missing_json=15`、`errors=0`。
+- 已生成 `local_data/yolo_obb_annotation_pack/smoke/labels/sample_009.txt`。
+- `python scripts\validate_obb_dataset.py` 已运行，结果：`samples_with_labels=1`、`samples_missing_labels=15`、`total_labels=1`、`error_count=0`。
+- `python scripts\visualize_obb_labels.py` 已运行，生成 overlay 图。
+- 已人工查看 `sample_009_overlay.png`，红框正确圈住右侧标题栏主体，链路验证通过。
+- 后续可以继续用 ISAT 标注剩余 15 张样本。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

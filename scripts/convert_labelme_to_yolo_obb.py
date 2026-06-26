@@ -22,7 +22,20 @@ def order_points(points: list[tuple[float, float]]) -> list[tuple[float, float]]
     return sorted(points, key=lambda p: math.atan2(p[1] - cy, p[0] - cx))
 
 
-def find_shape(data: dict, sample: str) -> dict:
+def find_json_path(labelme_dir: Path, sample: str) -> Path | None:
+    exact = labelme_dir / f"{sample}.json"
+    if exact.exists():
+        return exact
+
+    matches = sorted(labelme_dir.glob(f"*{sample}.json"))
+    if len(matches) == 1:
+        return matches[0]
+    if len(matches) > 1:
+        raise ValueError(f"{sample}: multiple matching JSON files: {matches}")
+    return None
+
+
+def find_labelme_shape(data: dict, sample: str) -> dict:
     matches = [
         shape
         for shape in data.get("shapes", [])
@@ -33,15 +46,47 @@ def find_shape(data: dict, sample: str) -> dict:
     return matches[0]
 
 
-def convert_one(json_path: Path, output_path: Path, sample: str) -> dict:
-    data = json.loads(json_path.read_text(encoding="utf-8"))
+def extract_labelme_points(data: dict, sample: str) -> tuple[int, int, list[tuple[float, float]], str]:
     image_width = data.get("imageWidth")
     image_height = data.get("imageHeight")
     if not image_width or not image_height:
-        raise ValueError(f"{sample}: missing imageWidth/imageHeight in {json_path}")
+        raise ValueError(f"{sample}: missing imageWidth/imageHeight")
 
-    shape = find_shape(data, sample)
+    shape = find_labelme_shape(data, sample)
     points = [(float(x), float(y)) for x, y in shape.get("points", [])]
+    return int(image_width), int(image_height), points, "labelme"
+
+
+def extract_isat_points(data: dict, sample: str) -> tuple[int, int, list[tuple[float, float]], str]:
+    info = data.get("info", {})
+    image_width = info.get("width")
+    image_height = info.get("height")
+    if not image_width or not image_height:
+        raise ValueError(f"{sample}: missing info.width/info.height")
+
+    matches = [
+        obj
+        for obj in data.get("objects", [])
+        if obj.get("category") == "title_block"
+    ]
+    if len(matches) != 1:
+        raise ValueError(f"{sample}: expected exactly one title_block object, got {len(matches)}")
+
+    points = [(float(x), float(y)) for x, y in matches[0].get("segmentation", [])]
+    return int(image_width), int(image_height), points, "isat"
+
+
+def extract_points(data: dict, sample: str) -> tuple[int, int, list[tuple[float, float]], str]:
+    if "shapes" in data:
+        return extract_labelme_points(data, sample)
+    if "objects" in data:
+        return extract_isat_points(data, sample)
+    raise ValueError(f"{sample}: unsupported JSON format")
+
+
+def convert_one(json_path: Path, output_path: Path, sample: str) -> dict:
+    data = json.loads(json_path.read_text(encoding="utf-8"))
+    image_width, image_height, points, source_format = extract_points(data, sample)
     ordered = order_points(points)
     normalized: list[float] = []
     for x, y in ordered:
@@ -58,6 +103,7 @@ def convert_one(json_path: Path, output_path: Path, sample: str) -> dict:
         "json_path": str(json_path),
         "output_path": str(output_path),
         "points": len(points),
+        "source_format": source_format,
         "status": "converted",
     }
 
@@ -77,12 +123,13 @@ def main() -> int:
     errors: list[str] = []
 
     for record in records:
-        json_path = labelme_dir / f"{record.sample}.json"
+        json_path = find_json_path(labelme_dir, record.sample)
         output_path = labels_dir / f"{record.sample}.txt"
-        if not json_path.exists():
-            message = f"{record.sample}: missing Labelme JSON {json_path}"
+        if json_path is None:
+            expected = labelme_dir / f"{record.sample}.json"
+            message = f"{record.sample}: missing Labelme/ISAT JSON {expected}"
             if args.allow_missing:
-                report.append({"sample": record.sample, "status": "missing_json", "json_path": str(json_path)})
+                report.append({"sample": record.sample, "status": "missing_json", "json_path": str(expected)})
                 continue
             errors.append(message)
             continue

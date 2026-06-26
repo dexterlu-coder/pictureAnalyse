@@ -819,6 +819,13 @@ YOLO/OBB smoke overlay 人工复查结果：
 - 机器清单另存为 `round2_manifest.csv` 和 `round2_manifest.json`，不作为人工填写入口。
 - 脚本已兼容用户表格软件保存后的 `utf-8-sig` 与 `gb18030` 编码。
 
+固定审核入口调整：
+
+- 第二轮待审核内容改为发布到 `local_data/review_inbox/current/`。
+- 用户当前只需要查看固定入口中的 `review_index.html` 和 `reference_form.csv`。
+- 固定入口中新增 `README.md`，说明当前应打开的文件。
+- 旧业务目录中的第二轮文件作为历史产物保留；后续用户审核完成后，再由执行者归档当前审核文件。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

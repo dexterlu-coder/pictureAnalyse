@@ -15,7 +15,7 @@ AUGMENTED_GT = ROOT / "local_data" / "ground_truth" / "rotation_ground_truth_aug
 ORIGINAL_IMAGES = ROOT / "local_data" / "experiment_samples" / "all" / "png"
 AUGMENTED_IMAGES = ROOT / "local_data" / "experiment_samples" / "augmented_90" / "png"
 SMOKE_REVIEW_FORM = ROOT / "local_data" / "yolo_obb_annotation_pack" / "smoke" / "overlay_review" / "review_form.csv"
-DEFAULT_OUTPUT_DIR = ROOT / "local_data" / "yolo_obb_annotation_pack" / "hardcase_round2"
+DEFAULT_OUTPUT_DIR = ROOT / "local_data" / "review_inbox" / "current"
 
 BASE_HARD_ORIGINALS = {
     "sample_001": "用户复查指出不好判断，需要补充人工参考",
@@ -342,6 +342,20 @@ def build(output_dir: Path) -> dict:
     )
     write_reference_form(output_dir / "reference_form.csv", records)
     write_html(output_dir / "review_index.html", records)
+    (output_dir / "README.md").write_text(
+        """# 当前待审核内容
+
+本目录是固定审核入口。你每次只需要来这里找当前任务。
+
+本轮请使用：
+
+- `review_index.html`：查看需要标注/参考的图片。
+- `reference_form.csv`：填写标注完成情况、标题栏边界参考、难点说明和备注。
+
+其他文件是机器清单或摘要，通常不需要打开。
+""",
+        encoding="utf-8",
+    )
     (output_dir / "round2_task.md").write_text(
         """# 第二轮 90 度补强与难例参考标注
 

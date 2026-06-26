@@ -706,6 +706,16 @@ ISAT smoke 标注完成待处理：
 - 后续处理只应读取 `local_data/yolo_obb_annotation_pack/smoke/smoke_manifest.csv` 中的 16 张样本，额外 JSON 暂不进入转换和训练。
 - 当前转换脚本默认只搜索 `smoke/labelme_json/`，需要扩展为也能搜索每条 manifest 对应图片所在目录。
 
+ISAT smoke 全量转换与校验结果：
+
+- `scripts/convert_labelme_to_yolo_obb.py` 已扩展为优先搜索 `smoke/labelme_json/`，若不存在则搜索 manifest 中每张图片所在目录。
+- 已运行 `python scripts\convert_labelme_to_yolo_obb.py --allow-missing`，结果：`converted=16`、`missing_json=0`、`errors=0`。
+- 已生成 16 个 YOLO/OBB 标签文件到 `local_data/yolo_obb_annotation_pack/smoke/labels/`。
+- 已运行 `python scripts\validate_obb_dataset.py`，结果：`total_samples=16`、`samples_with_labels=16`、`samples_missing_labels=0`、`total_labels=16`、`error_count=0`、`warning_count=0`、`source_split_leakage_count=0`。
+- 已运行 `python scripts\visualize_obb_labels.py`，结果：`overlay_written=16`、`missing_images=0`、`missing_labels=0`、`parse_errors=0`。
+- 已抽查 `sample_010`、`aug90_002_from_sample_010`、`sample_020` overlay，标题栏框位置正确。
+- 额外非 smoke JSON 暂不进入转换、校验或训练。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

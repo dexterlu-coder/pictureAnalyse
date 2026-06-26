@@ -5,7 +5,7 @@ import json
 import math
 from pathlib import Path
 
-from obb_utils import ROOT, load_manifest, resolve_path
+from obb_utils import ROOT, ManifestRecord, load_manifest, resolve_path
 
 
 DEFAULT_MANIFEST = ROOT / "local_data" / "yolo_obb_annotation_pack" / "smoke" / "smoke_manifest.csv"
@@ -22,16 +22,24 @@ def order_points(points: list[tuple[float, float]]) -> list[tuple[float, float]]
     return sorted(points, key=lambda p: math.atan2(p[1] - cy, p[0] - cx))
 
 
-def find_json_path(labelme_dir: Path, sample: str) -> Path | None:
-    exact = labelme_dir / f"{sample}.json"
-    if exact.exists():
-        return exact
+def find_json_path(record: ManifestRecord, labelme_dir: Path) -> Path | None:
+    search_dirs = [labelme_dir, record.image_path.parent]
+    seen: set[Path] = set()
 
-    matches = sorted(labelme_dir.glob(f"*{sample}.json"))
-    if len(matches) == 1:
-        return matches[0]
-    if len(matches) > 1:
-        raise ValueError(f"{sample}: multiple matching JSON files: {matches}")
+    for directory in search_dirs:
+        if directory in seen:
+            continue
+        seen.add(directory)
+
+        exact = directory / f"{record.sample}.json"
+        if exact.exists():
+            return exact
+
+        matches = sorted(directory.glob(f"*{record.sample}.json"))
+        if len(matches) == 1:
+            return matches[0]
+        if len(matches) > 1:
+            raise ValueError(f"{record.sample}: multiple matching JSON files in {directory}: {matches}")
     return None
 
 
@@ -123,7 +131,7 @@ def main() -> int:
     errors: list[str] = []
 
     for record in records:
-        json_path = find_json_path(labelme_dir, record.sample)
+        json_path = find_json_path(record, labelme_dir)
         output_path = labels_dir / f"{record.sample}.txt"
         if json_path is None:
             expected = labelme_dir / f"{record.sample}.json"

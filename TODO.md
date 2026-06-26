@@ -162,6 +162,7 @@
 - [x] 记录 YOLO/OBB 训练规划依据调研成果。
 - [x] 整理公开文档目录结构，区分 research、plans、workflows。
 - [x] 为 docs、references、rules、reports 增加索引说明。
+- [x] 制定 YOLO/OBB 第二轮首训计划。
 - [ ] 决定是否安装 Ultralytics 并启动 YOLO/OBB 冒烟训练。
 - [ ] 设计 OCR 小实验。
 - [ ] 设计云端 VLM 兜底小实验。

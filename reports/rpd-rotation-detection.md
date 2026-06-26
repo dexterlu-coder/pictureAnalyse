@@ -1011,6 +1011,20 @@ YOLO/OBB 训练前最终数据集构建需求：
 - 长期项目规则放入 `rules/`。
 - 需求、验收和阶段结果汇总放入 `reports/`。
 
+YOLO/OBB 第二轮首训计划需求：
+
+- 必须依据 `docs/research/2026-06-26-yolo-obb-training-basis.md` 和 YOLO/OBB 调试调研结论制定。
+- 本轮训练只验证本地 YOLO/OBB 标题栏 detector 链路，不宣称工业级泛化能力。
+- 首轮模型优先使用 nano 级 OBB 模型，降低配置压力。
+- 训练产物必须输出到 ignored 的 `local_data/yolo_runs/`。
+- 训练前必须检查 Ultralytics 是否安装、数据集 YAML 是否存在、数据集校验是否为 0 问题。
+- 训练后必须生成预测图，并通过固定审核入口让用户复查。
+- 若训练失败或预测差，必须按错误类型分层，不得直接调大模型或跳过分析。
+
+计划文件：
+
+- `docs/plans/yolo-obb-round2-training-plan.md`
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

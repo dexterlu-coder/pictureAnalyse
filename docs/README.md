@@ -13,7 +13,8 @@
 1. [YOLO/OBB 训练规划依据](research/2026-06-26-yolo-obb-training-basis.md)
 2. [YOLO/OBB 调试方案取经笔记](research/2026-06-25-yolo-obb-debugging-research.md)
 3. [YOLO/OBB 标题栏检测小实验计划](plans/yolo-obb-title-block-experiment-plan.md)
-4. [ISAT OBB 标注流程](workflows/isat-obb-annotation-workflow.md)
+4. [YOLO/OBB 第二轮首训计划](plans/yolo-obb-round2-training-plan.md)
+5. [ISAT OBB 标注流程](workflows/isat-obb-annotation-workflow.md)
 
 ## Research
 
@@ -41,6 +42,7 @@
 - [YOLO/OBB 调试调研计划](plans/yolo-obb-debugging-research-plan.md)
 - [YOLO/OBB 标签工具计划](plans/yolo-obb-label-tools-plan.md)
 - [YOLO/OBB 冒烟训练准备计划](plans/yolo-obb-smoke-training-plan.md)
+- [YOLO/OBB 第二轮首训计划](plans/yolo-obb-round2-training-plan.md)
 - [标注工具选择计划](plans/annotation-tool-selection-plan.md)
 - [ISAT 调研计划](plans/isat-annotation-tool-research-plan.md)
 - [项目结构整理计划](plans/project-structure-cleanup-plan.md)

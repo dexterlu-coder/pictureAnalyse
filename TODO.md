@@ -146,6 +146,8 @@
 - [x] 修正固定审核入口规则，要求标注图片副本也必须放入 `current`。
 - [x] 将第二轮 ISAT 待标注图片复制到 `local_data/review_inbox/current/to_label/`。
 - [x] 将第二轮参考图片复制到 `local_data/review_inbox/current/references/`。
+- [ ] 生成不清晰图纸的顺时针 90 度增强样本。
+- [ ] 将不清晰 90 度增强样本发布到固定审核入口。
 - [ ] 用户标注/补充第二轮 90 度补强与难例参考样本。
 - [ ] 决定是否安装 Ultralytics 并启动 YOLO/OBB 冒烟训练。
 - [ ] 设计 OCR 小实验。

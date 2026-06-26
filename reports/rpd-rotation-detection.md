@@ -854,6 +854,15 @@ YOLO/OBB smoke overlay 人工复查结果：
 - `review_index.html` 当前只引用固定入口内的 `to_label/` 和 `references/` 图片。
 - 脚本在 `reference_form.csv` 被表格软件占用时不会中断图片和 HTML 发布，会保留已有表格并继续生成其他入口文件。
 
+不清晰 90 度增强样本需求：
+
+- 用户发现当前 `to_label/` 中顺时针 90 度样本整体较清晰，希望增加更不好分辨的 90 度样本。
+- 新样本应从原始人工确认图纸中选择线条更淡、锐度更低、局部对比度更差或标题栏更难辨认的图纸。
+- 必须强制纳入用户指出难判断的 `sample_001` 和历史低置信样本 `sample_042`。
+- 生成后的样本必须旋转为顺时针 90 度，即标题栏位于左侧。
+- 新样本必须复制到固定审核入口 `local_data/review_inbox/current/to_label/`，参考图复制到 `local_data/review_inbox/current/references/`。
+- 用户不需要手动寻找或复制任何图片。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

@@ -696,6 +696,16 @@ ISAT 单样本链路验证结果：
 - 已人工查看 `sample_009_overlay.png`，红框正确圈住右侧标题栏主体，链路验证通过。
 - 后续可以继续用 ISAT 标注剩余 15 张样本。
 
+ISAT smoke 标注完成待处理：
+
+- 用户已完成 smoke 标注，JSON 保存在两个图片目录中：
+  - `local_data/experiment_samples/all/png/`
+  - `local_data/experiment_samples/augmented_90/png/`
+- 其中原始图片目录包含 smoke 所需的 10 张 JSON，也包含若干额外非 smoke JSON。
+- 增强 90 度目录包含 smoke 所需的 6 张 JSON。
+- 后续处理只应读取 `local_data/yolo_obb_annotation_pack/smoke/smoke_manifest.csv` 中的 16 张样本，额外 JSON 暂不进入转换和训练。
+- 当前转换脚本默认只搜索 `smoke/labelme_json/`，需要扩展为也能搜索每条 manifest 对应图片所在目录。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

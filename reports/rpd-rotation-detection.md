@@ -891,6 +891,22 @@ YOLO/OBB smoke overlay 人工复查结果：
 - 转换后必须运行标签校验和 overlay 可视化，不得直接进入训练。
 - 下一轮固定入口应切换为 overlay 复查任务，只展示当前需要用户复查的 overlay 图片和填写表。
 
+完成状态：已完成。
+
+处理结果：
+
+- 已确认 `local_data/review_inbox/current/to_label/` 中有 40 张 PNG 和 40 个对应 JSON。
+- 已归档当前标注材料到 `local_data/review_inbox/archive/round2_annotations_20260626_annotated/`。
+- 已转换 40 个 ISAT JSON 为 YOLO/OBB 标签。
+- 标签输出目录：`local_data/review_inbox/current/labels/`。
+- 转换结果：`converted=40`，`missing_json=0`，`errors=0`。
+- 已运行标签校验：`total_samples=40`，`samples_with_labels=40`，`total_labels=40`，`error_count=0`，`warning_count=0`。
+- 已生成 overlay：`overlay_written=40`，`missing_images=0`，`missing_labels=0`，`parse_errors=0`。
+- 已生成固定入口 overlay 复查页面：`local_data/review_inbox/current/overlay_review/review_index.html`。
+- 已生成固定入口 overlay 复查表：`local_data/review_inbox/current/overlay_review/review_form.csv`。
+- 已更新 `local_data/review_inbox/current/README.md`，当前任务切换为 overlay 复查。
+- 当前仍不得进入 YOLO/OBB 训练，必须等待用户复查 40 张 overlay。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

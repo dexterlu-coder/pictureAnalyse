@@ -163,8 +163,8 @@
 - [x] 整理公开文档目录结构，区分 research、plans、workflows。
 - [x] 为 docs、references、rules、reports 增加索引说明。
 - [x] 制定 YOLO/OBB 第二轮首训计划。
-- [ ] 检查 Ultralytics 训练环境。
-- [ ] 安装 Ultralytics 训练依赖。
+- [x] 检查 Ultralytics 训练环境。
+- [x] 安装 Ultralytics 训练依赖。
 - [ ] 运行 YOLO/OBB 第二轮首训。
 - [ ] 生成并复查 YOLO/OBB 首训预测结果。
 - [ ] 设计 OCR 小实验。

@@ -1034,6 +1034,23 @@ YOLO/OBB 第二轮首训环境执行需求：
 - 训练产物必须写入 ignored 的 `local_data/yolo_runs/`。
 - 若环境安装失败或训练命令不可用，必须停在环境问题分析，不得跳过到下一阶段。
 
+完成状态：环境检查和依赖安装已完成。
+
+环境处理结果：
+
+- Python 版本：3.11.9。
+- 已安装 Ultralytics：8.4.78。
+- 已确认 `yolo version` 可用。
+- 已确认 `local_data/yolo_obb_dataset_round2/data.yaml`、`dataset_summary.json`、`dataset_validation.json` 存在。
+- 数据集校验问题数：0。
+
+环境修复说明：
+
+- Ultralytics 首次启动默认会写入用户目录 `C:\Users\dexterlu\AppData\Roaming\Ultralytics`，当前受限环境无法写入。
+- 已改为在运行训练命令前设置 `YOLO_CONFIG_DIR=D:\project\codex\pictureAnalyse\local_data\ultralytics_config`。
+- Ultralytics 实际配置目录为 `local_data/ultralytics_config/Ultralytics/`，保持在 ignored 的本地目录内，不进入公开仓库。
+- Windows 控制台对 Ultralytics 包说明中的 emoji 存在 GBK 编码问题，后续训练命令统一设置 `PYTHONIOENCODING=utf-8`。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

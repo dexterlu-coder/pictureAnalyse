@@ -924,6 +924,18 @@ YOLO/OBB smoke overlay 人工复查结果：
 - 当前 `current/` 只保留 `README.md`，提示当前没有待用户审核、填写或标注的文件。
 - 归档目录保留 labels、overlays、overlay_review、validation、to_label、references、manifest、转换报告和复查表。
 
+YOLO/OBB 训练前最终数据集构建需求：
+
+- 数据来源使用已通过人工 overlay 复查的第二轮归档：`local_data/review_inbox/archive/round2_overlay_review_20260626_approved/`。
+- 样本总数：40，包括 `augmented_90` 20、`augmented_90_unclear` 12、`original` 8。
+- 构建数据集时必须按 `source_sample` 分组划分，避免同一张原图的原始版、90 度增强版、不清晰增强版跨 train/val/test 泄漏。
+- 固定 `test` 来源样本为 `sample_001`、`sample_010`、`sample_042`，覆盖用户指出难例、底部标题栏样本和历史低置信样本。
+- 固定 `val` 来源样本为 `sample_009`、`sample_020`、`sample_034`、`sample_040`，覆盖历史误判、上方标题栏、右侧标题栏和不清晰 90 度样本。
+- 其余来源样本进入 `train`。
+- 预期划分：train 26，val 7，test 7。
+- 构建后必须检查图片/标签数量、标签字段、坐标范围和 source_sample 跨 split 泄漏。
+- 该数据集用于训练链路和小样本验证，不应被表述为工业级泛化评估集。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

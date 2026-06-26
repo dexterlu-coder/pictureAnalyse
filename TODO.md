@@ -159,6 +159,9 @@
 - [x] 规划 YOLO/OBB 训练前最终数据集构建。
 - [x] 构建第二轮人工确认 YOLO/OBB 分组数据集。
 - [x] 校验第二轮人工确认 YOLO/OBB 分组数据集。
+- [ ] 记录 YOLO/OBB 训练规划依据调研成果。
+- [ ] 整理公开文档目录结构，区分 research、plans、workflows。
+- [ ] 为 docs、references、rules、reports 增加索引说明。
 - [ ] 决定是否安装 Ultralytics 并启动 YOLO/OBB 冒烟训练。
 - [ ] 设计 OCR 小实验。
 - [ ] 设计云端 VLM 兜底小实验。

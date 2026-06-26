@@ -763,6 +763,14 @@ YOLO/OBB overlay 人工复查页面结果：
 - `review_form.csv` 只保留 `序号`、`样本编号`、`标题栏位置`、`旋转角度`、`人工判断`、`备注`，符合人工界面简化规则。
 - 当前还未进行人工复查，不得进入 YOLO/OBB 训练。
 
+YOLO/OBB overlay 人工复查文件重写要求：
+
+- 本轮人工审核目标只判断红框是否准确框住标题栏主体。
+- `review_index.html` 只展示样本编号和 overlay 图片，不展示标题栏位置、旋转角度、模型字段或调试信息。
+- `review_form.csv` 只保留 `序号`、`样本编号`、`红框是否正确`、`备注`。
+- 标题栏位置和旋转角度等信息已存在于 manifest、ground truth 或机器报告中，不应进入本轮人工填写文件。
+- 重写后仍不得进入 YOLO/OBB 训练，必须等待用户完成 16 张 overlay 人工复查。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

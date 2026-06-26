@@ -863,6 +863,25 @@ YOLO/OBB smoke overlay 人工复查结果：
 - 新样本必须复制到固定审核入口 `local_data/review_inbox/current/to_label/`，参考图复制到 `local_data/review_inbox/current/references/`。
 - 用户不需要手动寻找或复制任何图片。
 
+完成状态：已完成。
+
+新增脚本：
+
+- `scripts/create_unclear_augmented_90_samples.py`
+
+执行结果：
+
+- 已生成不清晰来源顺时针 90 度增强样本：12 张。
+- 输出目录：`local_data/experiment_samples/augmented_90_unclear/png/`。
+- 本地 ground truth：`local_data/ground_truth/rotation_ground_truth_augmented_90_unclear.json`。
+- 质量指标表：`local_data/ground_truth/unclear_source_quality_metrics.csv`。
+- 新增样本源：`sample_001`、`sample_042`、`sample_040`、`sample_037`、`sample_036`、`sample_034`、`sample_050`、`sample_052`、`sample_035`、`sample_039`、`sample_044`、`sample_038`。
+- `sample_001` 和 `sample_042` 为强制纳入样本；其余样本由锐度、对比度、边缘密度和暗线比例综合指标筛选。
+- 已更新 `scripts/build_yolo_obb_hardcase_pack.py`，将 `augmented_90_unclear` 纳入固定审核入口。
+- 当前固定入口 `local_data/review_inbox/current/to_label/` 包含 40 张待标注 PNG。
+- 当前固定入口 `local_data/review_inbox/current/references/` 包含 28 张参考 PNG。
+- 当前 `reference_form.csv` 包含 40 条记录。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

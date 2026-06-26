@@ -397,7 +397,11 @@ def build(output_dir: Path) -> dict:
         json.dumps(manifest_records, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-    write_reference_form(output_dir / "reference_form.csv", published_records)
+    reference_form_status = "written"
+    try:
+        write_reference_form(output_dir / "reference_form.csv", published_records)
+    except PermissionError:
+        reference_form_status = "locked_existing_kept"
     write_html(output_dir / "review_index.html", published_records)
     (output_dir / "README.md").write_text(
         """# 当前待审核内容
@@ -447,6 +451,7 @@ to_label/
             "references_dir": str(output_dir / "references"),
             "to_label_images": len(list((output_dir / "to_label").glob("*.png"))),
             "reference_images": len(list((output_dir / "references").glob("*.png"))),
+            "reference_form_status": reference_form_status,
         }
     )
     (output_dir / "round2_summary.json").write_text(

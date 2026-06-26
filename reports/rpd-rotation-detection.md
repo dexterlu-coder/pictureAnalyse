@@ -665,6 +665,17 @@ ISAT 标注工具调研需求：
 - 本轮不安装 ISAT、不开始标注、不训练 YOLO/OBB、不删除 Labelme 方案。
 - 详细计划见 `docs/isat-annotation-tool-research-plan.md`。
 
+ISAT 标注工具调研结论：
+
+- 推荐从 `Labelme 优先` 调整为 `ISAT 优先，Labelme 备用`。
+- ISAT 支持手动 polygon，支持 Shift 约束水平、垂直和 45 度线，更适合标题栏这类规则形状。
+- ISAT 提供预览、快速浏览和细节检查，人工复核体验可能优于 Labelme。
+- ISAT 支持 ISAT/COCO/YOLO/LABELME/VOC 等格式转换，但其 YOLO 转换不应直接假设为 Ultralytics OBB。
+- 对本项目最稳妥的链路是：ISAT 标注 polygon -> 导出/转换 Labelme JSON -> 使用现有 `convert_labelme_to_yolo_obb.py` 转为 YOLO OBB。
+- 下一步不应一次性标完 16 张，而是先用 ISAT 标注 1 张样本，验证导出/转换/校验/overlay 链路。
+- 新增记录：`docs/2026-06-26-isat-annotation-tool-research.md`。
+- 新增操作说明：`docs/isat-obb-annotation-workflow.md`。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`
@@ -678,6 +689,8 @@ ISAT 标注工具调研需求：
 - `docs/yolo-obb-label-tools-plan.md`
 - `docs/annotation-tool-selection-plan.md`
 - `docs/isat-annotation-tool-research-plan.md`
+- `docs/2026-06-26-isat-annotation-tool-research.md`
+- `docs/isat-obb-annotation-workflow.md`
 - `rules/human-review-interface.md`
 - `references/annotation-tool-selection/README.md`
 - `docs/2026-06-25-obb-annotation-tool-selection.md`

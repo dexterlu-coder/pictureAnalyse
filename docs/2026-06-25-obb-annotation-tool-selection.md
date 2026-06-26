@@ -16,7 +16,7 @@
 
 ## 二、结论
 
-推荐使用：
+原推荐使用：
 
 ```text
 Labelme + 项目内转换脚本
@@ -57,3 +57,20 @@ Labelme + 项目内转换脚本
 - Labelme GitHub：https://github.com/wkentaro/labelme
 - CVAT GitHub：https://github.com/cvat-ai/cvat
 - Label Studio 文档：https://labelstud.io/
+
+## 七、2026-06-26 补充：ISAT 调研后修正
+
+经补充调研，当前推荐调整为：
+
+```text
+ISAT 优先，Labelme 备用
+```
+
+原因：
+
+- ISAT 支持手动 polygon。
+- ISAT 支持 Shift 约束水平、垂直和 45 度线，适合标题栏这类规则形状。
+- ISAT 支持预览、快速浏览和细节检查，人工复核体验更好。
+- ISAT 可在本地运行，并支持 ISAT/COCO/YOLO/LABELME/VOC 等格式转换。
+
+保留 Labelme 作为备用，原因是 Labelme 更轻，且现有转换脚本已经可用。

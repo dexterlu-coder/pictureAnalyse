@@ -841,6 +841,19 @@ YOLO/OBB smoke overlay 人工复查结果：
 - 第二轮固定入口必须新增 `references/`，放参考图片副本。
 - `review_index.html` 必须引用固定入口内的图片副本，不得引用其他业务目录中的原图。
 
+完成状态：已完成。
+
+修正结果：
+
+- 已更新 `AGENTS.md`，明确固定入口必须包含用户实际要打开、填写、标注或参考的全部文件副本。
+- 已更新 `scripts/build_yolo_obb_hardcase_pack.py`，自动复制待标注图片和参考图片到固定入口。
+- 当前 ISAT 待标注图片目录：`local_data/review_inbox/current/to_label/`。
+- 当前参考图片目录：`local_data/review_inbox/current/references/`。
+- `to_label/` 当前包含 28 张 PNG。
+- `references/` 当前包含 20 张 PNG。
+- `review_index.html` 当前只引用固定入口内的 `to_label/` 和 `references/` 图片。
+- 脚本在 `reference_form.csv` 被表格软件占用时不会中断图片和 HTML 发布，会保留已有表格并继续生成其他入口文件。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

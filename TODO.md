@@ -143,9 +143,9 @@
 - [x] 生成第二轮 90 度补强与难例参考标注包。
 - [x] 将固定审核入口规则写入 AGENTS.md。
 - [x] 将当前第二轮待审核内容发布到固定入口 `local_data/review_inbox/current/`。
-- [ ] 修正固定审核入口规则，要求标注图片副本也必须放入 `current`。
-- [ ] 将第二轮 ISAT 待标注图片复制到 `local_data/review_inbox/current/to_label/`。
-- [ ] 将第二轮参考图片复制到 `local_data/review_inbox/current/references/`。
+- [x] 修正固定审核入口规则，要求标注图片副本也必须放入 `current`。
+- [x] 将第二轮 ISAT 待标注图片复制到 `local_data/review_inbox/current/to_label/`。
+- [x] 将第二轮参考图片复制到 `local_data/review_inbox/current/references/`。
 - [ ] 用户标注/补充第二轮 90 度补强与难例参考样本。
 - [ ] 决定是否安装 Ultralytics 并启动 YOLO/OBB 冒烟训练。
 - [ ] 设计 OCR 小实验。

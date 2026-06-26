@@ -882,6 +882,15 @@ YOLO/OBB smoke overlay 人工复查结果：
 - 当前固定入口 `local_data/review_inbox/current/references/` 包含 28 张参考 PNG。
 - 当前 `reference_form.csv` 包含 40 条记录。
 
+第二轮标注完成后的处理需求：
+
+- 用户已完成 `local_data/review_inbox/current/to_label/` 中 40 张图片的 ISAT 标注。
+- 当前 `to_label/` 中应有 40 张 PNG 和 40 个对应 JSON。
+- 处理前必须先归档当前固定入口，避免覆盖用户刚完成的标注材料。
+- 归档后将 ISAT JSON 转换为 YOLO/OBB 标签。
+- 转换后必须运行标签校验和 overlay 可视化，不得直接进入训练。
+- 下一轮固定入口应切换为 overlay 复查任务，只展示当前需要用户复查的 overlay 图片和填写表。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

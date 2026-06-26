@@ -134,6 +134,9 @@
 - [x] 规划 YOLO/OBB 冒烟训练数据集准备。
 - [x] 构建本地 YOLO/OBB smoke 数据集结构。
 - [x] 校验本地 YOLO/OBB smoke 数据集结构。
+- [x] 写入工业级稳定可靠优先规则。
+- [ ] 生成 16 张 smoke overlay 人工复查页面。
+- [ ] 人工复查 16 张 smoke overlay。
 - [ ] 决定是否安装 Ultralytics 并启动 YOLO/OBB 冒烟训练。
 - [ ] 设计 OCR 小实验。
 - [ ] 设计云端 VLM 兜底小实验。

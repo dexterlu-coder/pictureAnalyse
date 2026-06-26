@@ -737,6 +737,14 @@ YOLO/OBB smoke 数据集构建结果：
 - 已执行标签格式校验：所有 train/val 标签均为 1 行 9 字段，类别为 0，坐标在 `[0, 1]` 内，问题数为 0。
 - 当前未安装 Ultralytics，尚未启动训练；下一步需要用户确认是否安装训练依赖并运行 YOLO/OBB 冒烟训练。
 
+工业级稳定可靠优先规则：
+
+- 用户明确要求最终结果稳定可靠为最优先选项。
+- 当稳定可靠与速度、自动化程度、少走步骤发生冲突时，必须优先选择稳定可靠。
+- YOLO/OBB smoke 数据集虽然已构建完成，但进入训练前必须先人工复查 16 张 overlay。
+- 后续 OCR、VLM、YOLO 训练、PDF 校正等流程均不得绕过质量门。
+- 规则已写入 `rules/human-review-interface.md`。
+
 详细文件：
 
 - `references/ocr-vlm-workflow-research/README.md`

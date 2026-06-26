@@ -13,8 +13,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 ORIGINAL_GT = ROOT / "local_data" / "ground_truth" / "rotation_ground_truth.json"
 AUGMENTED_GT = ROOT / "local_data" / "ground_truth" / "rotation_ground_truth_augmented_90.json"
+UNCLEAR_AUGMENTED_GT = ROOT / "local_data" / "ground_truth" / "rotation_ground_truth_augmented_90_unclear.json"
 ORIGINAL_IMAGES = ROOT / "local_data" / "experiment_samples" / "all" / "png"
 AUGMENTED_IMAGES = ROOT / "local_data" / "experiment_samples" / "augmented_90" / "png"
+UNCLEAR_AUGMENTED_IMAGES = ROOT / "local_data" / "experiment_samples" / "augmented_90_unclear" / "png"
 SMOKE_REVIEW_FORM = ROOT / "local_data" / "yolo_obb_annotation_pack" / "smoke" / "overlay_review" / "review_form.csv"
 DEFAULT_OUTPUT_DIR = ROOT / "local_data" / "review_inbox" / "current"
 
@@ -88,23 +90,37 @@ def original_records() -> dict[str, dict]:
 
 def augmented_records(originals: dict[str, dict]) -> list[dict]:
     records = []
-    for record in load_json(AUGMENTED_GT):
-        sample = record["sample"]
-        source_sample = record["source_sample"]
-        source = originals[source_sample]
-        records.append(
-            {
-                "dataset": "augmented_90",
-                "sample": sample,
-                "source_sample": source_sample,
-                "image_path": find_image(AUGMENTED_IMAGES, sample),
-                "reference_image_path": source["image_path"],
-                "title_block_position": record["title_block_position"],
-                "precise_title_block_position": record.get("precise_title_block_position", ""),
-                "rotation_degrees": record["rotation_degrees"],
-                "reason": "顺时针 90 度补强样本，标题栏位于左侧",
-            }
+    augmented_sources = [
+        (AUGMENTED_GT, AUGMENTED_IMAGES, "augmented_90", "顺时针 90 度补强样本，标题栏位于左侧"),
+    ]
+    if UNCLEAR_AUGMENTED_GT.exists():
+        augmented_sources.append(
+            (
+                UNCLEAR_AUGMENTED_GT,
+                UNCLEAR_AUGMENTED_IMAGES,
+                "augmented_90_unclear",
+                "不清晰顺时针 90 度补强样本，标题栏位于左侧",
+            )
         )
+
+    for gt_path, image_dir, dataset, reason in augmented_sources:
+        for record in load_json(gt_path):
+            sample = record["sample"]
+            source_sample = record["source_sample"]
+            source = originals[source_sample]
+            records.append(
+                {
+                    "dataset": dataset,
+                    "sample": sample,
+                    "source_sample": source_sample,
+                    "image_path": find_image(image_dir, sample),
+                    "reference_image_path": source["image_path"],
+                    "title_block_position": record["title_block_position"],
+                    "precise_title_block_position": record.get("precise_title_block_position", ""),
+                    "rotation_degrees": record["rotation_degrees"],
+                    "reason": reason,
+                }
+            )
     return records
 
 
